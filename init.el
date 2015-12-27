@@ -31,6 +31,12 @@
 (add-hook 'c-mode-hook 'my-c-tab)
 
 
+;; Go lang indent
+(add-hook 'go-mode-hook
+      '(lambda ()
+         (setq tab-width 4)
+         ))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Emphasis current line
  (global-hl-line-mode)
