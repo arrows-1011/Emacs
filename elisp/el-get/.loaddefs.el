@@ -596,6 +596,17 @@ the mode directly.
 
 ;;;***
 
+;;;### (autoloads (flymake-shell-load) "flymake-shell/flymake-shell"
+;;;;;;  "flymake-shell/flymake-shell.el" (22104 2749 0 0))
+;;; Generated autoloads from flymake-shell/flymake-shell.el
+
+(autoload 'flymake-shell-load "flymake-shell/flymake-shell" "\
+Configure flymake mode to check the current buffer's shell-script syntax.
+
+\(fn)" t nil)
+
+;;;***
+
 ;;;### (autoloads (git-gutter:cancel-update-timer git-gutter:start-update-timer
 ;;;;;;  git-gutter:update-all-windows git-gutter:set-start-revision
 ;;;;;;  git-gutter:toggle git-gutter:clear git-gutter git-gutter:previous-hunk
@@ -696,6 +707,91 @@ Update git-gutter informations for all visible buffers.
 
 
 \(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (go-download-play godoc gofmt-before-save go-mode)
+;;;;;;  "go-mode/go-mode" "go-mode/go-mode.el" (22143 48967 0 0))
+;;; Generated autoloads from go-mode/go-mode.el
+
+(autoload 'go-mode "go-mode/go-mode" "\
+Major mode for editing Go source text.
+
+This mode provides (not just) basic editing capabilities for
+working with Go code. It offers almost complete syntax
+highlighting, indentation that is almost identical to gofmt and
+proper parsing of the buffer content to allow features such as
+navigation by function, manipulation of comments or detection of
+strings.
+
+In addition to these core features, it offers various features to
+help with writing Go code. You can directly run buffer content
+through gofmt, read godoc documentation from within Emacs, modify
+and clean up the list of package imports or interact with the
+Playground (uploading and downloading pastes).
+
+The following extra functions are defined:
+
+- `gofmt'
+- `godoc'
+- `go-import-add'
+- `go-remove-unused-imports'
+- `go-goto-imports'
+- `go-play-buffer' and `go-play-region'
+- `go-download-play'
+- `godef-describe' and `godef-jump'
+- `go-coverage'
+
+If you want to automatically run `gofmt' before saving a file,
+add the following hook to your emacs configuration:
+
+\(add-hook 'before-save-hook #'gofmt-before-save)
+
+If you want to use `godef-jump' instead of etags (or similar),
+consider binding godef-jump to `M-.', which is the default key
+for `find-tag':
+
+\(add-hook 'go-mode-hook (lambda ()
+                          (local-set-key (kbd \"M-.\") #'godef-jump)))
+
+Please note that godef is an external dependency. You can install
+it with
+
+go get github.com/rogpeppe/godef
+
+
+If you're looking for even more integration with Go, namely
+on-the-fly syntax checking, auto-completion and snippets, it is
+recommended that you look at flycheck
+\(see URL `https://github.com/flycheck/flycheck') or flymake in combination
+with goflymake (see URL `https://github.com/dougm/goflymake'), gocode
+\(see URL `https://github.com/nsf/gocode'), go-eldoc
+\(see URL `github.com/syohex/emacs-go-eldoc') and yasnippet-go
+\(see URL `https://github.com/dominikh/yasnippet-go')
+
+\(fn)" t nil)
+
+(add-to-list 'auto-mode-alist (cons "\\.go\\'" 'go-mode))
+
+(autoload 'gofmt-before-save "go-mode/go-mode" "\
+Add this to .emacs to run gofmt on the current buffer when saving:
+ (add-hook 'before-save-hook 'gofmt-before-save).
+
+Note that this will cause go-mode to get loaded the first time
+you save any file, kind of defeating the point of autoloading.
+
+\(fn)" t nil)
+
+(autoload 'godoc "go-mode/go-mode" "\
+Show Go documentation for QUERY, much like M-x man.
+
+\(fn QUERY)" t nil)
+
+(autoload 'go-download-play "go-mode/go-mode" "\
+Download a paste from the playground and insert it in a Go buffer.
+Tries to look for a URL at point.
+
+\(fn URL)" t nil)
 
 ;;;***
 
@@ -2744,22 +2840,6 @@ Returns non-nil if the new state is enabled.
 
 ;;;***
 
-;;;### (autoloads nil "vc-bzr/vc-bzr" "vc-bzr/vc-bzr.el" (21953 50486
-;;;;;;  0 0))
-;;; Generated autoloads from vc-bzr/vc-bzr.el
-
-(defconst vc-bzr-admin-dirname ".bzr" "\
-Name of the directory containing Bzr repository status files.")
-
-(defconst vc-bzr-admin-checkout-format-file (concat vc-bzr-admin-dirname "/checkout/format"))
- (defun vc-bzr-registered (file)
-  (if (vc-find-root file vc-bzr-admin-checkout-format-file)
-      (progn
-        (load "vc-bzr")
-        (vc-bzr-registered file))))
-
-;;;***
-
 ;;;### (autoloads (web-mode) "web-mode/web-mode" "web-mode/web-mode.el"
 ;;;;;;  (21876 30557 0 0))
 ;;; Generated autoloads from web-mode/web-mode.el
@@ -2790,7 +2870,8 @@ Major mode for editing web templates.
 ;;;;;;  "el-get/el-get-core.el" "el-get/el-get-custom.el" "el-get/el-get-dependencies.el"
 ;;;;;;  "el-get/el-get-install.el" "el-get/el-get-methods.el" "el-get/el-get-notify.el"
 ;;;;;;  "el-get/el-get-recipes.el" "el-get/el-get-status.el" "epl/epl.el"
-;;;;;;  "fuzzy/fuzzy.el" "haskell-mode/haskell-bot.el" "haskell-mode/haskell-collapse.el"
+;;;;;;  "flymake-easy/flymake-easy.el" "fuzzy/fuzzy.el" "go-mode/go-mode-autoloads.el"
+;;;;;;  "haskell-mode/haskell-bot.el" "haskell-mode/haskell-collapse.el"
 ;;;;;;  "haskell-mode/haskell-compat.el" "haskell-mode/haskell-complete-module.el"
 ;;;;;;  "haskell-mode/haskell-completions.el" "haskell-mode/haskell-debug.el"
 ;;;;;;  "haskell-mode/haskell-mode-autoloads.el" "haskell-mode/haskell-mode-pkg.el"
@@ -2802,7 +2883,7 @@ Major mode for editing web templates.
 ;;;;;;  "php-mode/php-mode-test.el" "popup/popup.el" "powerline/powerline-separators.el"
 ;;;;;;  "tabbar/aquamacs-compat.el" "tabbar/aquamacs-tabbar.el" "tabbar/aquamacs-tools.el"
 ;;;;;;  "tabbar/one-buffer-one-frame.el" "tabbar/tabbar-window.el")
-;;;;;;  (21953 50486 401608 0))
+;;;;;;  (22143 48968 25343 0))
 
 ;;;***
 
