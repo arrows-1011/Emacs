@@ -13,9 +13,6 @@
 ;; display column line
  (setq column-number-mode t)
 
-;; insert a corresponding parenthesis.
-(electric-pair-mode 1)
-
 ;; C++ tab 4
 (defun my-c++-tab ()
   (c-set-style "stroustrup")  
@@ -69,9 +66,6 @@
 (require 'linum)
 (global-linum-mode)
 (setq linum-format "%4d ")
-
-;; Display current time
- (display-time)
 
 ;; Option key -> Meta key
 (setq mac-option-modifier 'meta)
