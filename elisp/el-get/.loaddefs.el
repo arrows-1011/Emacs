@@ -578,6 +578,229 @@ Display a list of packages.
 
 ;;;***
 
+;;;### (autoloads nil "flycheck/flycheck" "flycheck/flycheck.el"
+;;;;;;  (22165 4002 0 0))
+;;; Generated autoloads from flycheck/flycheck.el
+
+(autoload 'flycheck-info "flycheck/flycheck" "\
+Open the Flycheck manual.
+
+\(fn)" t nil)
+
+(autoload 'flycheck-mode "flycheck/flycheck" "\
+Minor mode for on-the-fly syntax checking.
+
+When called interactively, toggle `flycheck-mode'.  With prefix
+ARG, enable `flycheck-mode' if ARG is positive, otherwise disable
+it.
+
+When called from Lisp, enable `flycheck-mode' if ARG is omitted,
+nil or positive.  If ARG is `toggle', toggle `flycheck-mode'.
+Otherwise behave as if called interactively.
+
+In `flycheck-mode' the buffer is automatically syntax-checked
+using the first suitable syntax checker from `flycheck-checkers'.
+Use `flycheck-select-checker' to select a checker for the current
+buffer manually.
+
+\\{flycheck-mode-map}
+
+\(fn &optional ARG)" t nil)
+
+(defvar global-flycheck-mode nil "\
+Non-nil if Global-Flycheck mode is enabled.
+See the command `global-flycheck-mode' for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `global-flycheck-mode'.")
+
+(custom-autoload 'global-flycheck-mode "flycheck/flycheck" nil)
+
+(autoload 'global-flycheck-mode "flycheck/flycheck" "\
+Toggle Flycheck mode in all buffers.
+With prefix ARG, enable Global-Flycheck mode if ARG is positive;
+otherwise, disable it.  If called from Lisp, enable the mode if
+ARG is omitted or nil.
+
+Flycheck mode is enabled in all buffers where
+`flycheck-mode-on-safe' would do it.
+See `flycheck-mode' for more information on Flycheck mode.
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'flycheck-define-error-level "flycheck/flycheck" "\
+Define a new error LEVEL with PROPERTIES.
+
+The following PROPERTIES constitute an error level:
+
+`:severity SEVERITY'
+     A number denoting the severity of this level.  The higher
+     the number, the more severe is this level compared to other
+     levels.  Defaults to 0.
+
+     The severity is used by `flycheck-error-level-<' to
+     determine the ordering of errors according to their levels.
+
+`:compilation-level LEVEL'
+
+     A number indicating the broad class of messages that errors
+     at this level belong to: one of 0 (info), 1 (warning), or
+     2 or nil (error).  Defaults to nil.
+
+     This is used by `flycheck-checker-pattern-to-error-regexp'
+     to map error levels into `compilation-mode''s hierarchy and
+     to get proper highlighting of errors in `compilation-mode'.
+
+`:overlay-category CATEGORY'
+     A symbol denoting the overlay category to use for error
+     highlight overlays for this level.  See Info
+     node `(elisp)Overlay Properties' for more information about
+     overlay categories.
+
+     A category for an error level overlay should at least define
+     the `face' property, for error highlighting.  Another useful
+     property for error level categories is `priority', to
+     influence the stacking of multiple error level overlays.
+
+`:fringe-bitmap BITMAP'
+     A fringe bitmap symbol denoting the bitmap to use for fringe
+     indicators for this level.  See Info node `(elisp)Fringe
+     Bitmaps' for more information about fringe bitmaps,
+     including a list of built-in fringe bitmaps.
+
+`:fringe-face FACE'
+     A face symbol denoting the face to use for fringe indicators
+     for this level.
+
+`:error-list-face FACE'
+     A face symbol denoting the face to use for messages of this
+     level in the error list.  See `flycheck-list-errors'.
+
+\(fn LEVEL &rest PROPERTIES)" nil nil)
+
+(put 'flycheck-define-error-level 'lisp-indent-function '1)
+
+(autoload 'flycheck-define-command-checker "flycheck/flycheck" "\
+Define SYMBOL as syntax checker which runs a command.
+
+Define SYMBOL as generic syntax checker via
+`flycheck-define-generic-checker', which uses an external command
+to check the buffer.  SYMBOL and DOCSTRING are the same as for
+`flycheck-define-generic-checker'.
+
+In addition to the properties understood by
+`flycheck-define-generic-checker', the following PROPERTIES
+constitute a command syntax checker.  Unless otherwise noted, all
+properties are mandatory.  Note that the default `:error-filter'
+of command checkers is `flycheck-sanitize-errors'.
+
+`:command COMMAND'
+     The command to run for syntax checking.
+
+     COMMAND is a list of the form `(EXECUTABLE [ARG ...])'.
+
+     EXECUTABLE is a string with the executable of this syntax
+     checker.  It can be overridden with the variable
+     `flycheck-SYMBOL-executable'.  Note that this variable is
+     NOT implicitly defined by this function.  Use
+     `flycheck-def-executable-var' to define this variable.
+
+     Each ARG is an argument to the executable, either as string,
+     or as special symbol or form for
+     `flycheck-substitute-argument', which see.
+
+`:error-patterns PATTERNS'
+     A list of patterns to parse the output of the `:command'.
+
+     Each ITEM in PATTERNS is a list `(LEVEL SEXP ...)', where
+     LEVEL is a Flycheck error level (see
+     `flycheck-define-error-level'), followed by one or more RX
+     `SEXP's which parse an error of that level and extract line,
+     column, file name and the message.
+
+     See `rx' for general information about RX, and
+     `flycheck-rx-to-string' for some special RX forms provided
+     by Flycheck.
+
+     All patterns are applied in the order of declaration to the
+     whole output of the syntax checker.  Output already matched
+     by a pattern will not be matched by subsequent patterns.  In
+     other words, the first pattern wins.
+
+     This property is optional.  If omitted, however, an
+     `:error-parser' is mandatory.
+
+`:error-parser FUNCTION'
+     A function to parse errors with.
+
+     The function shall accept three arguments OUTPUT CHECKER
+     BUFFER.  OUTPUT is the syntax checker output as string,
+     CHECKER the syntax checker that was used, and BUFFER a
+     buffer object representing the checked buffer.  The function
+     must return a list of `flycheck-error' objects parsed from
+     OUTPUT.
+
+     This property is optional.  If omitted, it defaults to
+     `flycheck-parse-with-patterns'.  In this case,
+     `:error-patterns' is mandatory.
+
+`:standard-input t'
+     Whether to send the buffer contents on standard input.
+
+     If this property is given and has a non-nil value, send the
+     contents of the buffer on standard input.
+
+     Defaults to nil.
+
+Note that you may not give `:start', `:interrupt', and
+`:print-doc' for a command checker.  You can give a custom
+`:verify' function, though, whose results will be appended to the
+default `:verify' function of command checkers.
+
+\(fn SYMBOL DOCSTRING &rest PROPERTIES)" nil nil)
+
+(put 'flycheck-define-command-checker 'lisp-indent-function '1)
+
+(put 'flycheck-define-command-checker 'doc-string-elt '2)
+
+(autoload 'flycheck-def-config-file-var "flycheck/flycheck" "\
+Define SYMBOL as config file variable for CHECKER, with default FILE-NAME.
+
+SYMBOL is declared as customizable variable using `defcustom', to
+provide a configuration file for the given syntax CHECKER.
+CUSTOM-ARGS are forwarded to `defcustom'.
+
+FILE-NAME is the initial value of the new variable.  If omitted,
+the default value is nil.
+
+Use this together with the `config-file' form in the `:command'
+argument to `flycheck-define-checker'.
+
+\(fn SYMBOL CHECKER &optional FILE-NAME &rest CUSTOM-ARGS)" nil t)
+
+(put 'flycheck-def-config-file-var 'lisp-indent-function '3)
+
+(autoload 'flycheck-def-option-var "flycheck/flycheck" "\
+Define SYMBOL as option variable with INIT-VALUE for CHECKER.
+
+SYMBOL is declared as customizable variable using `defcustom', to
+provide an option for the given syntax CHECKERS (a checker or a
+list of checkers).  INIT-VALUE is the initial value of the
+variable, and DOCSTRING is its docstring.  CUSTOM-ARGS are
+forwarded to `defcustom'.
+
+Use this together with the `option', `option-list' and
+`option-flag' forms in the `:command' argument to
+`flycheck-define-checker'.
+
+\(fn SYMBOL INIT-VALUE CHECKERS DOCSTRING &rest CUSTOM-ARGS)" nil t)
+
+(put 'flycheck-def-option-var 'lisp-indent-function '3)
+
+(put 'flycheck-def-option-var 'doc-string-elt '4)
+
+;;;***
+
 ;;;### (autoloads (flymake-cursor-mode) "flymake-cursor/flymake-cursor"
 ;;;;;;  "flymake-cursor/flymake-cursor.el" (21953 49946 0 0))
 ;;; Generated autoloads from flymake-cursor/flymake-cursor.el
@@ -792,990 +1015,6 @@ Download a paste from the playground and insert it in a Go buffer.
 Tries to look for a URL at point.
 
 \(fn URL)" t nil)
-
-;;;***
-
-;;;### (autoloads (ghc-core-mode ghc-core-create-core) "haskell-mode/ghc-core"
-;;;;;;  "haskell-mode/ghc-core.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/ghc-core.el
-
-(autoload 'ghc-core-create-core "haskell-mode/ghc-core" "\
-Compile and load the current buffer as tidy core.
-
-\(fn)" t nil)
-
-(add-to-list 'auto-mode-alist '("\\.hcr\\'" . ghc-core-mode))
-
-(add-to-list 'auto-mode-alist '("\\.dump-simpl\\'" . ghc-core-mode))
-
-(autoload 'ghc-core-mode "haskell-mode/ghc-core" "\
-Major mode for GHC Core files.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (ghci-script-mode) "haskell-mode/ghci-script-mode"
-;;;;;;  "haskell-mode/ghci-script-mode.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/ghci-script-mode.el
-
-(autoload 'ghci-script-mode "haskell-mode/ghci-script-mode" "\
-Major mode for working with .ghci files.
-
-\(fn)" t nil)
-
-(add-to-list 'auto-mode-alist '("\\.ghci\\'" . ghci-script-mode))
-
-;;;***
-
-;;;### (autoloads (haskell-process-minimal-imports haskell-process-cabal
-;;;;;;  haskell-process-cabal-build haskell-process-load-or-reload
-;;;;;;  haskell-process-reload-file haskell-process-load-file haskell-interactive-bring
-;;;;;;  haskell-mode-tag-find haskell-mode-after-save-handler haskell-mode-jump-to-tag
-;;;;;;  haskell-mode-contextual-space haskell-interactive-mode-visit-error
-;;;;;;  haskell-kill-session-process haskell-session-change haskell-interactive-switch
-;;;;;;  haskell-session haskell-interactive-kill haskell-session-kill
-;;;;;;  haskell-interactive-mode-return interactive-haskell-mode)
-;;;;;;  "haskell-mode/haskell" "haskell-mode/haskell.el" (21919 15222
-;;;;;;  0 0))
-;;; Generated autoloads from haskell-mode/haskell.el
-
-(autoload 'interactive-haskell-mode "haskell-mode/haskell" "\
-Minor mode for enabling haskell-process interaction.
-
-\(fn &optional ARG)" t nil)
-
-(autoload 'haskell-interactive-mode-return "haskell-mode/haskell" "\
-Handle the return key.
-
-\(fn)" t nil)
-
-(autoload 'haskell-session-kill "haskell-mode/haskell" "\
-Kill the session process and buffer, delete the session.
-0. Prompt to kill all associated buffers.
-1. Kill the process.
-2. Kill the interactive buffer.
-3. Walk through all the related buffers and set their haskell-session to nil.
-4. Remove the session from the sessions list.
-
-\(fn &optional LEAVE-INTERACTIVE-BUFFER)" t nil)
-
-(autoload 'haskell-interactive-kill "haskell-mode/haskell" "\
-Kill the buffer and (maybe) the session.
-
-\(fn)" t nil)
-
-(autoload 'haskell-session "haskell-mode/haskell" "\
-Get the Haskell session, prompt if there isn't one or fail.
-
-\(fn)" nil nil)
-
-(autoload 'haskell-interactive-switch "haskell-mode/haskell" "\
-Switch to the interactive mode for this session.
-
-\(fn)" t nil)
-
-(autoload 'haskell-session-change "haskell-mode/haskell" "\
-Change the session for the current buffer.
-
-\(fn)" t nil)
-
-(autoload 'haskell-kill-session-process "haskell-mode/haskell" "\
-Kill the process.
-
-\(fn &optional SESSION)" t nil)
-
-(autoload 'haskell-interactive-mode-visit-error "haskell-mode/haskell" "\
-Visit the buffer of the current (or last) error message.
-
-\(fn)" t nil)
-
-(autoload 'haskell-mode-contextual-space "haskell-mode/haskell" "\
-Contextually do clever stuff when hitting space.
-
-\(fn)" t nil)
-
-(autoload 'haskell-mode-jump-to-tag "haskell-mode/haskell" "\
-Jump to the tag of the given identifier.
-
-\(fn &optional NEXT-P)" t nil)
-
-(autoload 'haskell-mode-after-save-handler "haskell-mode/haskell" "\
-Function that will be called after buffer's saving.
-
-\(fn)" nil nil)
-
-(autoload 'haskell-mode-tag-find "haskell-mode/haskell" "\
-The tag find function, specific for the particular session.
-
-\(fn &optional NEXT-P)" t nil)
-
-(autoload 'haskell-interactive-bring "haskell-mode/haskell" "\
-Bring up the interactive mode for this session.
-
-\(fn)" t nil)
-
-(autoload 'haskell-process-load-file "haskell-mode/haskell" "\
-Load the current buffer file.
-
-\(fn)" t nil)
-
-(autoload 'haskell-process-reload-file "haskell-mode/haskell" "\
-Re-load the current buffer file.
-
-\(fn)" t nil)
-
-(autoload 'haskell-process-load-or-reload "haskell-mode/haskell" "\
-Load or reload. Universal argument toggles which.
-
-\(fn &optional TOGGLE)" t nil)
-
-(autoload 'haskell-process-cabal-build "haskell-mode/haskell" "\
-Build the Cabal project.
-
-\(fn)" t nil)
-
-(autoload 'haskell-process-cabal "haskell-mode/haskell" "\
-Prompts for a Cabal command to run.
-
-\(fn P)" t nil)
-
-(autoload 'haskell-process-minimal-imports "haskell-mode/haskell" "\
-Dump minimal imports.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-align-imports) "haskell-mode/haskell-align-imports"
-;;;;;;  "haskell-mode/haskell-align-imports.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-align-imports.el
-
-(autoload 'haskell-align-imports "haskell-mode/haskell-align-imports" "\
-Align all the imports in the buffer.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-cabal-visit-file haskell-cabal-get-dir
-;;;;;;  haskell-cabal-guess-setting haskell-cabal-mode) "haskell-mode/haskell-cabal"
-;;;;;;  "haskell-mode/haskell-cabal.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-cabal.el
-
-(add-to-list 'auto-mode-alist '("\\.cabal\\'" . haskell-cabal-mode))
-
-(autoload 'haskell-cabal-mode "haskell-mode/haskell-cabal" "\
-Major mode for Cabal package description files.
-
-\(fn)" t nil)
-
-(autoload 'haskell-cabal-guess-setting "haskell-mode/haskell-cabal" "\
-Guess the specified setting of this project.
-If there is no valid .cabal file to get the setting from (or
-there is no corresponding setting with that name in the .cabal
-file), then this function returns nil.
-
-\(fn NAME)" t nil)
-
-(autoload 'haskell-cabal-get-dir "haskell-mode/haskell-cabal" "\
-Get the Cabal dir for a new project. Various ways of figuring this out,
-   and indeed just prompting the user. Do them all.
-
-\(fn)" nil nil)
-
-(autoload 'haskell-cabal-visit-file "haskell-mode/haskell-cabal" "\
-Locate and visit package description file for file visited by current buffer.
-This uses `haskell-cabal-find-file' to locate the closest
-\".cabal\" file and open it.  This command assumes a common Cabal
-project structure where the \".cabal\" file is in the top-folder
-of the project, and all files related to the project are in or
-below the top-folder.  If called with non-nil prefix argument
-OTHER-WINDOW use `find-file-other-window'.
-
-\(fn OTHER-WINDOW)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-lint-command) "haskell-mode/haskell-checkers"
-;;;;;;  "haskell-mode/haskell-checkers.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-checkers.el
-
-(defvar haskell-lint-command "hlint" "\
-The default lint command for \\[hlint].")
-
-(custom-autoload 'haskell-lint-command "haskell-mode/haskell-checkers" t)
-
-;;;***
-
-;;;### (autoloads (haskell-mode-find-uses haskell-mode-stylish-buffer
-;;;;;;  haskell-session-change-target haskell-process-unignore haskell-process-generate-tags
-;;;;;;  haskell-mode-show-type-at haskell-process-cabal-macros haskell-process-cd
-;;;;;;  haskell-mode-jump-to-def haskell-mode-goto-loc haskell-mode-jump-to-def-or-tag
-;;;;;;  haskell-process-do-type haskell-process-do-info haskell-rgrep
-;;;;;;  haskell-describe haskell-process-touch-buffer haskell-process-interrupt
-;;;;;;  haskell-process-clear haskell-process-restart) "haskell-mode/haskell-commands"
-;;;;;;  "haskell-mode/haskell-commands.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-commands.el
-
-(autoload 'haskell-process-restart "haskell-mode/haskell-commands" "\
-Restart the inferior Haskell process.
-
-\(fn)" t nil)
-
-(autoload 'haskell-process-clear "haskell-mode/haskell-commands" "\
-Clear the current process.
-
-\(fn)" t nil)
-
-(autoload 'haskell-process-interrupt "haskell-mode/haskell-commands" "\
-Interrupt the process (SIGINT).
-
-\(fn)" t nil)
-
-(autoload 'haskell-process-touch-buffer "haskell-mode/haskell-commands" "\
-Query PROCESS to `:!touch` BUFFER's file.
-Use to update mtime on BUFFER's file.
-
-\(fn PROCESS BUFFER)" t nil)
-
-(autoload 'haskell-describe "haskell-mode/haskell-commands" "\
-Describe the given identifier IDENT.
-
-\(fn IDENT)" t nil)
-
-(autoload 'haskell-rgrep "haskell-mode/haskell-commands" "\
-Grep the effective project for the symbol at point.
-Very useful for codebase navigation.
-
-Prompts for an arbitrary regexp given a prefix arg PROMPT.
-
-\(fn &optional PROMPT)" t nil)
-
-(autoload 'haskell-process-do-info "haskell-mode/haskell-commands" "\
-Print info on the identifier at point.
-If PROMPT-VALUE is non-nil, request identifier via mini-buffer.
-
-\(fn &optional PROMPT-VALUE)" t nil)
-
-(autoload 'haskell-process-do-type "haskell-mode/haskell-commands" "\
-Print the type of the given expression.
-
-Given INSERT-VALUE prefix indicates that result type signature
-should be inserted.
-
-\(fn &optional INSERT-VALUE)" t nil)
-
-(autoload 'haskell-mode-jump-to-def-or-tag "haskell-mode/haskell-commands" "\
-Jump to the definition.
-Jump to definition of identifier at point by consulting GHCi, or
-tag table as fallback.
-
-Remember: If GHCi is busy doing something, this will delay, but
-it will always be accurate, in contrast to tags, which always
-work but are not always accurate.
-If the definition or tag is found, the location from which you jumped
-will be pushed onto `xref--marker-ring', so you can return to that
-position with `xref-pop-marker-stack'.
-
-\(fn &optional NEXT-P)" t nil)
-
-(autoload 'haskell-mode-goto-loc "haskell-mode/haskell-commands" "\
-Go to the location of the thing at point.
-Requires the :loc-at command from GHCi.
-
-\(fn)" t nil)
-
-(autoload 'haskell-mode-jump-to-def "haskell-mode/haskell-commands" "\
-Jump to definition of identifier IDENT at point.
-
-\(fn IDENT)" t nil)
-
-(autoload 'haskell-process-cd "haskell-mode/haskell-commands" "\
-Change directory.
-
-\(fn &optional NOT-INTERACTIVE)" t nil)
-
-(autoload 'haskell-process-cabal-macros "haskell-mode/haskell-commands" "\
-Send the cabal macros string.
-
-\(fn)" t nil)
-
-(autoload 'haskell-mode-show-type-at "haskell-mode/haskell-commands" "\
-Show type of the thing at point or within active region asynchronously.
-This function requires GHCi-ng and `:set +c` option enabled by
-default (please follow GHCi-ng README available at URL
-`https://github.com/chrisdone/ghci-ng').
-
-\\<haskell-interactive-mode-map>
-To make this function works sometimes you need to load the file in REPL
-first using command `haskell-process-load-or-reload' bound to
-\\[haskell-process-load-or-reload].
-
-Optional argument INSERT-VALUE indicates that
-recieved type signature should be inserted (but only if nothing
-happened since function invocation).
-
-\(fn &optional INSERT-VALUE)" t nil)
-
-(autoload 'haskell-process-generate-tags "haskell-mode/haskell-commands" "\
-Regenerate the TAGS table.
-If optional AND-THEN-FIND-THIS-TAG argument is present it is used with
-function `xref-find-definitions' after new table was generated.
-
-\(fn &optional AND-THEN-FIND-THIS-TAG)" t nil)
-
-(autoload 'haskell-process-unignore "haskell-mode/haskell-commands" "\
-Unignore any ignored files.
-Do not ignore files that were specified as being ignored by the
-inferior GHCi process.
-
-\(fn)" t nil)
-
-(autoload 'haskell-session-change-target "haskell-mode/haskell-commands" "\
-Set the build TARGET for cabal REPL.
-
-\(fn TARGET)" t nil)
-
-(autoload 'haskell-mode-stylish-buffer "haskell-mode/haskell-commands" "\
-Apply stylish-haskell to the current buffer.
-
-\(fn)" t nil)
-
-(autoload 'haskell-mode-find-uses "haskell-mode/haskell-commands" "\
-Find use cases of the identifier at point and highlight them all.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-compile) "haskell-mode/haskell-compile"
-;;;;;;  "haskell-mode/haskell-compile.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-compile.el
-
-(autoload 'haskell-compile "haskell-mode/haskell-compile" "\
-Compile the Haskell program including the current buffer.
-Tries to locate the next cabal description in current or parent
-folders via `haskell-cabal-find-dir' and if found, invoke
-`haskell-compile-cabal-build-command' from the cabal package root
-folder. If no cabal package could be detected,
-`haskell-compile-command' is used instead.
-
-If prefix argument EDIT-COMMAND is non-nil (and not a negative
-prefix `-'), `haskell-compile' prompts for custom compile
-command.
-
-If EDIT-COMMAND contains the negative prefix argument `-',
-`haskell-compile' calls the alternative command defined in
-`haskell-compile-cabal-build-alt-command' if a cabal package was
-detected.
-
-`haskell-compile' uses `haskell-compilation-mode' which is
-derived from `compilation-mode'. See Info
-node `(haskell-mode)compilation' for more details.
-
-\(fn &optional EDIT-COMMAND)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-customize) "haskell-mode/haskell-customize"
-;;;;;;  "haskell-mode/haskell-customize.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-customize.el
-
-(autoload 'haskell-customize "haskell-mode/haskell-customize" "\
-Browse the haskell customize sub-tree.
-This calls 'customize-browse' with haskell as argument and makes
-sure all haskell customize definitions have been loaded.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-decl-scan-mode turn-on-haskell-decl-scan
-;;;;;;  haskell-ds-create-imenu-index) "haskell-mode/haskell-decl-scan"
-;;;;;;  "haskell-mode/haskell-decl-scan.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-decl-scan.el
-
-(autoload 'haskell-ds-create-imenu-index "haskell-mode/haskell-decl-scan" "\
-Function for finding `imenu' declarations in Haskell mode.
-Finds all declarations (classes, variables, imports, instances and
-datatypes) in a Haskell file for the `imenu' package.
-
-\(fn)" nil nil)
-
-(autoload 'turn-on-haskell-decl-scan "haskell-mode/haskell-decl-scan" "\
-Unconditionally activate `haskell-decl-scan-mode'.
-
-\(fn)" t nil)
-
-(autoload 'haskell-decl-scan-mode "haskell-mode/haskell-decl-scan" "\
-Toggle Haskell declaration scanning minor mode on or off.
-With a prefix argument ARG, enable minor mode if ARG is
-positive, and disable it otherwise.  If called from Lisp, enable
-the mode if ARG is omitted or nil, and toggle it if ARG is `toggle'.
-
-See also info node `(haskell-mode)haskell-decl-scan-mode' for
-more details about this minor mode.
-
-Top-level declarations are scanned and listed in the menu item
-\"Declarations\" (if enabled via option
-`haskell-decl-scan-add-to-menubar').  Selecting an item from this
-menu will take point to the start of the declaration.
-
-\\[beginning-of-defun] and \\[end-of-defun] move forward and backward to the start of a declaration.
-
-This may link with `haskell-doc-mode'.
-
-For non-literate and LaTeX-style literate scripts, we assume the
-common convention that top-level declarations start at the first
-column.  For Bird-style literate scripts, we assume the common
-convention that top-level declarations start at the third column,
-ie. after \"> \".
-
-Anything in `font-lock-comment-face' is not considered for a
-declaration.  Therefore, using Haskell font locking with comments
-coloured in `font-lock-comment-face' improves declaration scanning.
-
-Literate Haskell scripts are supported: If the value of
-`haskell-literate' (set automatically by `literate-haskell-mode')
-is `bird', a Bird-style literate script is assumed.  If it is nil
-or `tex', a non-literate or LaTeX-style literate script is
-assumed, respectively.
-
-Invokes `haskell-decl-scan-mode-hook' on activation.
-
-\(fn &optional ARG)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-doc-show-type haskell-doc-current-info
-;;;;;;  haskell-doc-mode) "haskell-mode/haskell-doc" "haskell-mode/haskell-doc.el"
-;;;;;;  (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-doc.el
-
-(autoload 'haskell-doc-mode "haskell-mode/haskell-doc" "\
-Enter `haskell-doc-mode' for showing fct types in the echo area.
-See variable docstring.
-
-\(fn &optional ARG)" t nil)
-
-(defalias 'turn-on-haskell-doc-mode 'haskell-doc-mode)
-
-(defalias 'turn-on-haskell-doc 'haskell-doc-mode)
-
-(autoload 'haskell-doc-current-info "haskell-mode/haskell-doc" "\
-Return the info about symbol at point.
-Meant for `eldoc-documentation-function'.
-
-\(fn)" nil nil)
-
-(autoload 'haskell-doc-show-type "haskell-mode/haskell-doc" "\
-Show the type of the function near point.
-For the function under point, show the type in the echo area.
-This information is extracted from the `haskell-doc-prelude-types' alist
-of prelude functions and their types, or from the local functions in the
-current buffer.
-
-\(fn &optional SYM)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-font-lock-choose-keywords) "haskell-mode/haskell-font-lock"
-;;;;;;  "haskell-mode/haskell-font-lock.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-font-lock.el
-
-(autoload 'haskell-font-lock-choose-keywords "haskell-mode/haskell-font-lock" "\
-
-
-\(fn)" nil nil)
-
-;;;***
-
-;;;### (autoloads (haskell-indent-mode turn-on-haskell-indent) "haskell-mode/haskell-indent"
-;;;;;;  "haskell-mode/haskell-indent.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-indent.el
-
-(autoload 'turn-on-haskell-indent "haskell-mode/haskell-indent" "\
-Turn on ``intelligent'' Haskell indentation mode.
-
-\(fn)" nil nil)
-
-(autoload 'haskell-indent-mode "haskell-mode/haskell-indent" "\
-``Intelligent'' Haskell indentation mode.
-This deals with the layout rule of Haskell.
-\\[haskell-indent-cycle] starts the cycle which proposes new
-possibilities as long as the TAB key is pressed.  Any other key
-or mouse click terminates the cycle and is interpreted except for
-RET which merely exits the cycle.
-Other special keys are:
-    \\[haskell-indent-insert-equal]
-      inserts an =
-    \\[haskell-indent-insert-guard]
-      inserts an |
-    \\[haskell-indent-insert-otherwise]
-      inserts an | otherwise =
-these functions also align the guards and rhs of the current definition
-    \\[haskell-indent-insert-where]
-      inserts a where keyword
-    \\[haskell-indent-align-guards-and-rhs]
-      aligns the guards and rhs of the region
-    \\[haskell-indent-put-region-in-literate]
-      makes the region a piece of literate code in a literate script
-
-Invokes `haskell-indent-hook' if not nil.
-
-\(fn &optional ARG)" t nil)
-
-;;;***
-
-;;;### (autoloads (turn-on-haskell-indentation haskell-indentation-mode)
-;;;;;;  "haskell-mode/haskell-indentation" "haskell-mode/haskell-indentation.el"
-;;;;;;  (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-indentation.el
-
-(autoload 'haskell-indentation-mode "haskell-mode/haskell-indentation" "\
-Haskell indentation mode that deals with the layout rule.
-It rebinds RET, DEL and BACKSPACE, so that indentations can be
-set and deleted as if they were real tabs.  It supports
-autofill-mode.
-
-It is possible to render indent stops for current line as
-overlays.  Please read documentation for option
-`haskell-indentation-enable-show-indentations' and option
-`haskell-indentation-show-indentations-after-eol'.  These options
-were disabled by default because in most cases occurs overlay
-clashing with other modes.
-
-\(fn &optional ARG)" t nil)
-
-(autoload 'turn-on-haskell-indentation "haskell-mode/haskell-indentation" "\
-Turn on the haskell-indentation minor mode.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-process-show-repl-response haskell-interactive-mode-echo
-;;;;;;  haskell-interactive-mode-reset-error) "haskell-mode/haskell-interactive-mode"
-;;;;;;  "haskell-mode/haskell-interactive-mode.el" (21919 15222 0
-;;;;;;  0))
-;;; Generated autoloads from haskell-mode/haskell-interactive-mode.el
-
-(autoload 'haskell-interactive-mode-reset-error "haskell-mode/haskell-interactive-mode" "\
-Reset the error cursor position.
-
-\(fn SESSION)" t nil)
-
-(autoload 'haskell-interactive-mode-echo "haskell-mode/haskell-interactive-mode" "\
-Echo a read only piece of text before the prompt.
-
-\(fn SESSION MESSAGE &optional MODE)" nil nil)
-
-(autoload 'haskell-process-show-repl-response "haskell-mode/haskell-interactive-mode" "\
-Send LINE to the GHCi process and echo the result in some fashion.
-Result will be printed in the minibuffer or presented using
-function `haskell-presentation-present', depending on variable
-`haskell-process-use-presentation-mode'.
-
-\(fn LINE)" nil nil)
-
-;;;***
-
-;;;### (autoloads (haskell-process-reload-devel-main) "haskell-mode/haskell-load"
-;;;;;;  "haskell-mode/haskell-load.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-load.el
-
-(autoload 'haskell-process-reload-devel-main "haskell-mode/haskell-load" "\
-Reload the module `DevelMain' and then run
-`DevelMain.update'. This is for doing live update of the code of
-servers or GUI applications. Put your development version of the
-program in `DevelMain', and define `update' to auto-start the
-program on a new thread, and use the `foreign-store' package to
-access the running context across :load/:reloads in GHCi.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-menu) "haskell-mode/haskell-menu" "haskell-mode/haskell-menu.el"
-;;;;;;  (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-menu.el
-
-(autoload 'haskell-menu "haskell-mode/haskell-menu" "\
-Launch the Haskell sessions menu.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-hayoo hoogle-lookup-from-local haskell-hoogle
-;;;;;;  literate-haskell-mode haskell-mode haskell-mode-view-news
-;;;;;;  haskell-version) "haskell-mode/haskell-mode" "haskell-mode/haskell-mode.el"
-;;;;;;  (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-mode.el
-
-(autoload 'haskell-version "haskell-mode/haskell-mode" "\
-Show the `haskell-mode` version in the echo area.
-With prefix argument HERE, insert it at point.
-
-\(fn &optional HERE)" t nil)
-
-(autoload 'haskell-mode-view-news "haskell-mode/haskell-mode" "\
-Display information on recent changes to haskell-mode.
-
-\(fn)" t nil)
-
-(autoload 'haskell-mode "haskell-mode/haskell-mode" "\
-Major mode for editing Haskell programs.
-
-For more information aee also Info node `(haskell-mode)Getting Started'.
-
-\\<haskell-mode-map>
-
-Literate Haskell scripts are supported via `literate-haskell-mode'.
-The variable `haskell-literate' indicates the style of the script in the
-current buffer.  See the documentation on this variable for more details.
-
-Use `haskell-version' to find out what version of Haskell mode you are
-currently using.
-
-Additional Haskell mode modules can be hooked in via `haskell-mode-hook'.
-
-Indentation modes:
-
-    `haskell-indentation-mode', Kristof Bastiaensen, Gergely Risko
-      Intelligent semi-automatic indentation Mk2
-
-    `haskell-indent-mode', Guy Lapalme
-      Intelligent semi-automatic indentation.
-
-    `haskell-simple-indent-mode', Graeme E Moss and Heribert Schuetz
-      Simple indentation.
-
-Interaction modes:
-
-    `interactive-haskell-mode'
-      Interact with per-project GHCi processes through a REPL and
-      directory-aware sessions.
-
-    `inf-haskell-mode'
-      Interact with a GHCi process using comint-mode. Deprecated.
-
-Other modes:
-
-    `haskell-decl-scan-mode', Graeme E Moss
-      Scans top-level declarations, and places them in a menu.
-
-    `haskell-doc-mode', Hans-Wolfgang Loidl
-      Echoes types of functions or syntax of keywords when the cursor is idle.
-
-To activate a minor-mode, simply run the interactive command. For
-example, `M-x haskell-doc-mode'. Run it again to disable it.
-
-To enable a mode for every haskell-mode buffer, add a hook in
-your Emacs configuration. To do that you can customize
-`haskell-mode-hook' or add lines to your .emacs file. For
-example, to enable `haskell-indent-mode' and
-`interactive-haskell-mode', use the following:
-
-    (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
-    (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-
-For more details see Info node `(haskell-mode)haskell-mode-hook'.
-
-Warning: do not enable more than one of the above indentation
-modes. See Info node `(haskell-mode)indentation' for more
-details.
-
-Minor modes that work well with `haskell-mode':
-
-- `smerge-mode': show and work with diff3 conflict markers used
-  by git, svn and other version control systems.
-
-\(fn)" t nil)
-
-(autoload 'literate-haskell-mode "haskell-mode/haskell-mode" "\
-As `haskell-mode' but for literate scripts.
-
-\(fn)" t nil)
-
-(add-to-list 'auto-mode-alist '("\\.[gh]s\\'" . haskell-mode))
-
-(add-to-list 'auto-mode-alist '("\\.l[gh]s\\'" . literate-haskell-mode))
-
-(add-to-list 'auto-mode-alist '("\\.hsc\\'" . haskell-mode))
-
-(add-to-list 'interpreter-mode-alist '("runghc" . haskell-mode))
-
-(add-to-list 'interpreter-mode-alist '("runhaskell" . haskell-mode))
-
-(add-to-list 'completion-ignored-extensions ".hi")
-
-(autoload 'haskell-hoogle "haskell-mode/haskell-mode" "\
-Do a Hoogle search for QUERY.
-When `haskell-hoogle-command' is non-nil, this command runs
-that.  Otherwise, it opens a hoogle search result in the browser.
-
-If prefix argument INFO is given, then `haskell-hoogle-command'
-is asked to show extra info for the items matching QUERY..
-
-\(fn QUERY &optional INFO)" t nil)
-
-(defalias 'hoogle 'haskell-hoogle)
-
-(autoload 'hoogle-lookup-from-local "haskell-mode/haskell-mode" "\
-Lookup by local hoogle.
-
-\(fn)" t nil)
-
-(autoload 'haskell-hayoo "haskell-mode/haskell-mode" "\
-Do a Hayoo search for QUERY.
-
-\(fn QUERY)" t nil)
-
-(defalias 'hayoo 'haskell-hayoo)
-
-;;;***
-
-;;;### (autoloads (haskell-session-project-modules haskell-session-all-modules
-;;;;;;  haskell-session-installed-modules) "haskell-mode/haskell-modules"
-;;;;;;  "haskell-mode/haskell-modules.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-modules.el
-
-(autoload 'haskell-session-installed-modules "haskell-mode/haskell-modules" "\
-Get the modules installed in the current package set.
-If DONTCREATE is non-nil don't create a new session.
-
-\(fn SESSION &optional DONTCREATE)" nil nil)
-
-(autoload 'haskell-session-all-modules "haskell-mode/haskell-modules" "\
-Get all modules -- installed or in the current project.
-If DONTCREATE is non-nil don't create a new session.
-
-\(fn SESSION &optional DONTCREATE)" nil nil)
-
-(autoload 'haskell-session-project-modules "haskell-mode/haskell-modules" "\
-Get the modules of the current project.
-If DONTCREATE is non-nil don't create a new session.
-
-\(fn SESSION &optional DONTCREATE)" nil nil)
-
-;;;***
-
-;;;### (autoloads (haskell-move-nested-left haskell-move-nested-right
-;;;;;;  haskell-move-nested) "haskell-mode/haskell-move-nested" "haskell-mode/haskell-move-nested.el"
-;;;;;;  (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-move-nested.el
-
-(autoload 'haskell-move-nested "haskell-mode/haskell-move-nested" "\
-Shift the nested off-side-rule block adjacent to point by COLS columns to the right.
-
-In Transient Mark mode, if the mark is active, operate on the contents
-of the region instead.
-
-\(fn COLS)" nil nil)
-
-(autoload 'haskell-move-nested-right "haskell-mode/haskell-move-nested" "\
-Increase indentation of the following off-side-rule block adjacent to point.
-
-Use a numeric prefix argument to indicate amount of indentation to apply.
-
-In Transient Mark mode, if the mark is active, operate on the contents
-of the region instead.
-
-\(fn COLS)" t nil)
-
-(autoload 'haskell-move-nested-left "haskell-mode/haskell-move-nested" "\
-Decrease indentation of the following off-side-rule block adjacent to point.
-
-Use a numeric prefix argument to indicate amount of indentation to apply.
-
-In Transient Mark mode, if the mark is active, operate on the contents
-of the region instead.
-
-\(fn COLS)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-navigate-imports-return haskell-navigate-imports-go
-;;;;;;  haskell-navigate-imports) "haskell-mode/haskell-navigate-imports"
-;;;;;;  "haskell-mode/haskell-navigate-imports.el" (21919 15222 0
-;;;;;;  0))
-;;; Generated autoloads from haskell-mode/haskell-navigate-imports.el
-
-(autoload 'haskell-navigate-imports "haskell-mode/haskell-navigate-imports" "\
-Cycle the Haskell import lines or return to point (with prefix arg).
-
-\(fn &optional RETURN)" t nil)
-
-(autoload 'haskell-navigate-imports-go "haskell-mode/haskell-navigate-imports" "\
-Go to the first line of a list of consequtive import lines. Cycles.
-
-\(fn)" t nil)
-
-(autoload 'haskell-navigate-imports-return "haskell-mode/haskell-navigate-imports" "\
-Return to the non-import point we were at before going to the module list.
-   If we were originally at an import list, we can just cycle through easily.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-session-process haskell-session-maybe)
-;;;;;;  "haskell-mode/haskell-session" "haskell-mode/haskell-session.el"
-;;;;;;  (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-session.el
-
-(autoload 'haskell-session-maybe "haskell-mode/haskell-session" "\
-Maybe get the Haskell session, return nil if there isn't one.
-
-\(fn)" nil nil)
-
-(autoload 'haskell-session-process "haskell-mode/haskell-session" "\
-Get the session process.
-
-\(fn S)" nil nil)
-
-;;;***
-
-;;;### (autoloads (turn-on-haskell-simple-indent haskell-simple-indent-mode)
-;;;;;;  "haskell-mode/haskell-simple-indent" "haskell-mode/haskell-simple-indent.el"
-;;;;;;  (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-simple-indent.el
-
-(autoload 'haskell-simple-indent-mode "haskell-mode/haskell-simple-indent" "\
-Simple Haskell indentation mode that uses simple heuristic.
-In this minor mode, `indent-for-tab-command' (bound to <tab> by
-default) will move the cursor to the next indent point in the
-previous nonblank line, whereas `haskell-simple-indent-backtab'
-\(bound to <backtab> by default) will move the cursor the
-previous indent point.  An indent point is a non-whitespace
-character following whitespace.
-
-Runs `haskell-simple-indent-hook' on activation.
-
-\(fn &optional ARG)" t nil)
-
-(autoload 'turn-on-haskell-simple-indent "haskell-mode/haskell-simple-indent" "\
-Turn on function `haskell-simple-indent-mode'.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (haskell-sort-imports) "haskell-mode/haskell-sort-imports"
-;;;;;;  "haskell-mode/haskell-sort-imports.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/haskell-sort-imports.el
-
-(autoload 'haskell-sort-imports "haskell-mode/haskell-sort-imports" "\
-Sort the import list at point. It sorts the current group
-i.e. an import list separated by blank lines on either side.
-
-If the region is active, it will restrict the imports to sort
-within that region.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (turn-on-haskell-unicode-input-method) "haskell-mode/haskell-unicode-input-method"
-;;;;;;  "haskell-mode/haskell-unicode-input-method.el" (21919 15222
-;;;;;;  0 0))
-;;; Generated autoloads from haskell-mode/haskell-unicode-input-method.el
-
-(autoload 'turn-on-haskell-unicode-input-method "haskell-mode/haskell-unicode-input-method" "\
-Set input method `haskell-unicode'.
-See Info node `Unicode(haskell-mode)' for more details.
-
-\(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (highlight-uses-mode) "haskell-mode/highlight-uses-mode"
-;;;;;;  "haskell-mode/highlight-uses-mode.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/highlight-uses-mode.el
-
-(autoload 'highlight-uses-mode "haskell-mode/highlight-uses-mode" "\
-Minor mode for highlighting and jumping between uses.
-
-\(fn &optional ARG)" t nil)
-
-;;;***
-
-;;;### (autoloads (inf-haskell-mode inferior-haskell-find-haddock
-;;;;;;  inferior-haskell-find-definition inferior-haskell-info inferior-haskell-kind
-;;;;;;  inferior-haskell-type inferior-haskell-send-decl inferior-haskell-load-and-run
-;;;;;;  inferior-haskell-load-file switch-to-haskell) "haskell-mode/inf-haskell"
-;;;;;;  "haskell-mode/inf-haskell.el" (21919 15222 0 0))
-;;; Generated autoloads from haskell-mode/inf-haskell.el
-
-(defalias 'run-haskell 'switch-to-haskell)
-
-(autoload 'switch-to-haskell "haskell-mode/inf-haskell" "\
-Show the inferior-haskell buffer.  Start the process if needed.
-
-\(fn &optional ARG)" t nil)
-
-(autoload 'inferior-haskell-load-file "haskell-mode/inf-haskell" "\
-Pass the current buffer's file to the inferior haskell process.
-If prefix arg \\[universal-argument] is given, just reload the previous file.
-
-\(fn &optional RELOAD)" t nil)
-
-(autoload 'inferior-haskell-load-and-run "haskell-mode/inf-haskell" "\
-Pass the current buffer's file to haskell and then run a COMMAND.
-
-\(fn COMMAND)" t nil)
-
-(autoload 'inferior-haskell-send-decl "haskell-mode/inf-haskell" "\
-Send current declaration to inferior-haskell process.
-
-\(fn)" t nil)
-
-(autoload 'inferior-haskell-type "haskell-mode/inf-haskell" "\
-Query the haskell process for the type of the given expression.
-If optional argument `insert-value' is non-nil, insert the type above point
-in the buffer.  This can be done interactively with the \\[universal-argument] prefix.
-The returned info is cached for reuse by `haskell-doc-mode'.
-
-\(fn EXPR &optional INSERT-VALUE)" t nil)
-
-(autoload 'inferior-haskell-kind "haskell-mode/inf-haskell" "\
-Query the haskell process for the kind of the given expression.
-
-\(fn TYPE)" t nil)
-
-(autoload 'inferior-haskell-info "haskell-mode/inf-haskell" "\
-Query the haskell process for the info of the given expression.
-
-\(fn SYM)" t nil)
-
-(autoload 'inferior-haskell-find-definition "haskell-mode/inf-haskell" "\
-Attempt to locate and jump to the definition of the given expression.
-
-\(fn SYM)" t nil)
-
-(autoload 'inferior-haskell-find-haddock "haskell-mode/inf-haskell" "\
-Find and open the Haddock documentation of SYM.
-Make sure to load the file into GHCi or Hugs first by using C-c C-l.
-Only works for functions in a package installed with ghc-pkg, or
-whatever the value of `haskell-package-manager-name' is.
-
-This function needs to find which package a given module belongs
-to.  In order to do this, it computes a module-to-package lookup
-alist, which is expensive to compute (it takes upwards of five
-seconds with more than about thirty installed packages).  As a
-result, we cache it across sessions using the cache file
-referenced by `inferior-haskell-module-alist-file'. We test to
-see if this is newer than `haskell-package-conf-file' every time
-we load it.
-
-\(fn SYM)" t nil)
-
-(autoload 'inf-haskell-mode "haskell-mode/inf-haskell" "\
-Minor mode for enabling inf-haskell process interaction.
-
-\(fn &optional ARG)" t nil)
 
 ;;;***
 
@@ -2049,28 +1288,6 @@ displayed in the example above.
 \(fn ALIST &rest BODY)" nil t)
 
 (put 'let-alist 'lisp-indent-function '1)
-
-;;;***
-
-;;;### (autoloads (gfm-mode markdown-mode) "markdown-mode/markdown-mode"
-;;;;;;  "markdown-mode/markdown-mode.el" (21936 18299 0 0))
-;;; Generated autoloads from markdown-mode/markdown-mode.el
-
-(autoload 'markdown-mode "markdown-mode/markdown-mode" "\
-Major mode for editing Markdown files.
-
-\(fn)" t nil)
-
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-
-(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
-
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
-(autoload 'gfm-mode "markdown-mode/markdown-mode" "\
-Major mode for editing GitHub Flavored Markdown files.
-
-\(fn)" t nil)
 
 ;;;***
 
@@ -2350,30 +1567,6 @@ the kill compile command of the mode.
 Bound on \\[mode-compile-kill].
 
 \(fn)" t nil)
-
-;;;***
-
-;;;### (autoloads (php-mode php-extra-constants php) "php-mode/php-mode"
-;;;;;;  "php-mode/php-mode.el" (21876 27999 0 0))
-;;; Generated autoloads from php-mode/php-mode.el
-
-(let ((loads (get 'php 'custom-loads))) (if (member '"php-mode/php-mode" loads) nil (put 'php 'custom-loads (cons '"php-mode/php-mode" loads))))
-
-(defvar php-extra-constants 'nil "\
-A list of additional strings to treat as PHP constants.")
-
-(custom-autoload 'php-extra-constants "php-mode/php-mode" nil)
-
-(add-to-list 'interpreter-mode-alist (cons "php" 'php-mode))
-
-(autoload 'php-mode "php-mode/php-mode" "\
-Major mode for editing PHP code.
-
-\\{php-mode-map}
-
-\(fn)" t nil)
-
-(dolist (pattern '("\\.php[s345t]?\\'" "\\.phtml\\'" "Amkfile" "\\.amk$")) (add-to-list 'auto-mode-alist `(,pattern . php-mode) t))
 
 ;;;***
 
@@ -2870,20 +2063,12 @@ Major mode for editing web templates.
 ;;;;;;  "el-get/el-get-core.el" "el-get/el-get-custom.el" "el-get/el-get-dependencies.el"
 ;;;;;;  "el-get/el-get-install.el" "el-get/el-get-methods.el" "el-get/el-get-notify.el"
 ;;;;;;  "el-get/el-get-recipes.el" "el-get/el-get-status.el" "epl/epl.el"
+;;;;;;  "flycheck/flycheck-buttercup.el" "flycheck/flycheck-ert.el"
 ;;;;;;  "flymake-easy/flymake-easy.el" "fuzzy/fuzzy.el" "go-mode/go-mode-autoloads.el"
-;;;;;;  "haskell-mode/haskell-bot.el" "haskell-mode/haskell-collapse.el"
-;;;;;;  "haskell-mode/haskell-compat.el" "haskell-mode/haskell-complete-module.el"
-;;;;;;  "haskell-mode/haskell-completions.el" "haskell-mode/haskell-debug.el"
-;;;;;;  "haskell-mode/haskell-mode-autoloads.el" "haskell-mode/haskell-mode-pkg.el"
-;;;;;;  "haskell-mode/haskell-package.el" "haskell-mode/haskell-presentation-mode.el"
-;;;;;;  "haskell-mode/haskell-process.el" "haskell-mode/haskell-repl.el"
-;;;;;;  "haskell-mode/haskell-sandbox.el" "haskell-mode/haskell-string.el"
-;;;;;;  "haskell-mode/haskell-utils.el" "haskell-mode/w3m-haddock.el"
 ;;;;;;  "minimap/minimap-autoloads.el" "minimap/minimap-pkg.el" "perl-completion/perl-completion.el"
-;;;;;;  "php-mode/php-mode-test.el" "popup/popup.el" "powerline/powerline-separators.el"
-;;;;;;  "tabbar/aquamacs-compat.el" "tabbar/aquamacs-tabbar.el" "tabbar/aquamacs-tools.el"
-;;;;;;  "tabbar/one-buffer-one-frame.el" "tabbar/tabbar-window.el")
-;;;;;;  (22159 60114 979029 0))
+;;;;;;  "popup/popup.el" "powerline/powerline-separators.el" "tabbar/aquamacs-compat.el"
+;;;;;;  "tabbar/aquamacs-tabbar.el" "tabbar/aquamacs-tools.el" "tabbar/one-buffer-one-frame.el"
+;;;;;;  "tabbar/tabbar-window.el") (22165 4005 255275 0))
 
 ;;;***
 

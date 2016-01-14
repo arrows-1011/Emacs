@@ -8,35 +8,20 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; display row line
- (setq line-number-mode t)
+(setq line-number-mode t)
 
 ;; display column line
- (setq column-number-mode t)
-
-;; C++ tab 4
-(defun my-c++-tab ()
-  (c-set-style "stroustrup")  
-  )
-
-(add-hook 'c++-mode-hook 'my-c++-tab)
-
-;; C tab 4
-(defun my-c-tab ()
-  (c-set-style "stroustrup")  
-  )
-
-(add-hook 'c-mode-hook 'my-c-tab)
-
+(setq column-number-mode t)
 
 ;; Go lang indent
 (add-hook 'go-mode-hook
-      '(lambda ()
-         (setq tab-width 4)
-         ))
+	  '(lambda ()
+	     (setq tab-width 4)
+	     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Emphasis current line
- (global-hl-line-mode)
+(global-hl-line-mode)
 
 ;; Setting color
 (defface hlline-face
@@ -51,16 +36,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Don't make back-up file
- (setq backup-inhibited t)
+(setq backup-inhibited t)
 
 ;; Erase auto save file
- (setq delete-auto-save-files t)
+(setq delete-auto-save-files t)
 
 ;; Stop blink of cursor
- (blink-cursor-mode 0)
+(blink-cursor-mode 0)
 
 ;; Hide scroll bar
- (set-scroll-bar-mode nil)
+(set-scroll-bar-mode nil)
 
 ;; Display line number
 (require 'linum)
@@ -79,18 +64,67 @@
 
 ;; Setting of background
 (if window-system (progn
-  (setq initial-frame-alist '((width . 150)(height . 48)(top . 0)(left . 48)))
-  (set-background-color "Black")
-  (set-foreground-color "White")
-  (set-cursor-color "Gray")
-  (set-frame-parameter nil 'alpha 85)
-))
+		    (setq initial-frame-alist '((width . 150)(height . 48)(top . 0)(left . 48)))
+		    (set-background-color "Black")
+		    (set-foreground-color "White")
+		    (set-cursor-color "Gray")
+		    (set-frame-parameter nil 'alpha 85)
+		    ))
 
 ;; Modify the iedit's bug
 (define-key global-map (kbd "C-c ;") 'iedit-mode)
 
 ;; C-e (move to end of line)
 (define-key global-map (kbd "C-e") 'move-end-of-line)
+
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; C, C++ basic setting
+
+;; C tab 4
+(defun my-c-tab ()
+  (c-set-style "stroustrup")  
+  )
+
+(add-hook 'c-mode-hook 'my-c-tab)
+
+;; C, C++ no tab
+(defun my-c-c++-mode-init ()
+  (setq indent-tabs-mode nil)
+  )
+
+(add-hook 'c-mode-hook 'my-c-c++-mode-init)
+(add-hook 'c++-mode-hook 'my-c-c++-mode-init)
+
+;; setting indent for c++
+(defun my-c++-indent ()
+  (c-set-offset 'inline-open 0)
+  (c-set-offset 'inline-close 0)
+  (c-set-offset 'access-label -2)
+  )
+
+(add-hook 'c++-mode-hook 'my-c++-indent)
+
+;; C, C++ configuration
+(defun my-c-c++-mode-conf ()
+  
+  ;; style
+  (c-set-style "stroustrup")
+
+  ;; setting indent
+  (c-set-offset 'case-label 4)
+  (c-set-offset 'label 4)
+  (c-set-offset 'statement-cont 'c-lineup-math) 
+  
+  ;; reflect a file written by other editor.
+  (auto-revert-mode)
+  )
+
+(add-hook 'c-mode-hook 'my-c-c++-mode-conf)
+(add-hook 'c++-mode-hook 'my-c-c++-mode-conf)
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -201,7 +235,7 @@
 
 ;; For preventing flymake is down
 (defadvice flymake-post-syntax-check 
-  (before flymake-force-check-was-interrupted)
+    (before flymake-force-check-was-interrupted)
   (setq flymake-check-was-interrupted t))
 (ad-activate 'flymake-post-syntax-check)
 ;;
@@ -209,8 +243,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; auto_complete
-
-(add-to-list 'load-path "~/.emacs.d/")
 
 (defun my:ac-init ()
   (require 'auto-complete)
@@ -220,7 +252,7 @@
   (add-to-list 'ac-dictionary-directories "~/.emacs.d//my_ac-dict/")
   (ac-set-trigger-key "TAB")
   (setq ac-use-menu-map t)
-)
+  )
 
 (add-hook 'c++-mode-hook 'my:ac-init)
 (add-hook 'c-mode-hook 'my:ac-init)
@@ -277,57 +309,37 @@
 ;; tabbar
 ;(require 'tabbar)
 ;(tabbar-mode 1)
-
+;
 ;(setq tabbar-ruler-swap-faces t)
 ;(require 'tabbar-ruler)
-
+;
 ;(global-set-key "\M-]" 'tabbar-forward)  ; next tab
 ;(global-set-key "\M-[" 'tabbar-backward) ; previous tab
-
+;
 ;; Erase the left side button
 ;(dolist (btn '(tabbar-buffer-home-button
-;               tabbar-scroll-left-button
-;               tabbar-scroll-right-button))
+;	       tabbar-scroll-left-button
+;	       tabbar-scroll-right-button))
 ;  (set btn (cons (cons "" nil)
-;                 (cons "" nil))))
-
-
+;		 (cons "" nil))))
+;
+;
 ;; Lenght of tab separator
 ;(setq tabbar-separator '(1.5)) 
-
+;
 ;; List of display
 ;(defun my-tabbar-buffer-list ()
 ;  (delq nil
-;        (mapcar #'(lambda (b)
-;                    (cond
-                     ;; Always include the current buffer.
-;                     ((eq (current-buffer) b) b)
-;                     ((buffer-file-name b) b)
-;                     ((char-equal ?\  (aref (buffer-name b) 0)) nil)
+;	(mapcar #'(lambda (b)
+;		    (cond
+		     ;; Always include the current buffer.
+;		     ((eq (current-buffer) b) b)
+;		     ((buffer-file-name b) b)
+;		     ((char-equal ?\  (aref (buffer-name b) 0)) nil)
 ;		     ((char-equal ?* (aref (buffer-name b) 0)) nil) 
-;                     ((buffer-live-p b) b)))
-;                (buffer-list))))
+;		     ((buffer-live-p b) b)))
+;		(buffer-list))))
 ;(setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; php
-(load-library "php-mode") 
-(require 'php-mode)
-
-(add-hook 'php-mode-hook (lambda ()
-    (defun ywb-php-lineup-arglist-intro (langelem)
-      (save-excursion
-        (goto-char (cdr langelem))
-        (vector (+ (current-column) c-basic-offset))))
-    (defun ywb-php-lineup-arglist-close (langelem)
-      (save-excursion
-        (goto-char (cdr langelem))
-        (vector (current-column))))
-    (c-set-offset 'arglist-intro 'ywb-php-lineup-arglist-intro)
-    (c-set-offset 'arglist-close 'ywb-php-lineup-arglist-close)))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -369,21 +381,21 @@
 (setq auto-mode-alist (append '(("\\.pl$" . cperl-mode)) auto-mode-alist))
 (setq auto-mode-alist (append '(("\\.pm$" . cperl-mode)) auto-mode-alist))
 (setq auto-mode-alist (append '(("\\.t$" . cperl-mode)) auto-mode-alist))
- 
+
 (add-hook 'cperl-mode-hook
           '(lambda ()
- 
+	     
 	     ;; Setting for indent
              (cperl-set-style "PerlStyle")
              (custom-set-variables
               '(cperl-indent-parens-as-block t)
               '(cperl-close-paren-offset -4)
               '(cperl-indent-subs-specially nil))
- 
+	     
              ;; Display documents
              (define-key global-map (kbd "M-p") 'cperl-perldoc)
              ))
- 
+
 ;; Look at source
 (put 'perl-module-thing 'end-op
      (lambda ()
@@ -417,7 +429,7 @@
           (if pop-or-set-flag
               (switch-to-buffer buffer)
             (display-buffer buffer)))))))
- 
+
 (global-set-key (kbd "M-m") 'perldoc-m)
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -428,17 +440,6 @@
 (require 'git-gutter)
 (global-git-gutter-mode t)
 (add-hook 'c++-mode-hook 'git-gutter-mode)
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; haskell-mode
-;(require 'haskell-mode)
-;(require 'haskell-cabal)
-
-;(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
-;(add-to-list 'auto-mode-alist '("\\.cabal$" . haskell-cabal-mode))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -553,20 +554,20 @@ static char * arrow_right[] = {
 (defvar arrow-left-2  (create-image (arrow-left-xpm "None" color2) 'xpm t :ascent 'center))
 
 (setq-default mode-line-format
- (list  '(:eval (concat (propertize " %b " 'face 'mode-line-color-1)
-                        (propertize " " 'display arrow-right-1)))
-        '(:eval (concat (propertize " %m " 'face 'mode-line-color-2)
-                        (propertize " " 'display arrow-right-2)))
+	      (list  '(:eval (concat (propertize " %b " 'face 'mode-line-color-1)
+				     (propertize " " 'display arrow-right-1)))
+		     '(:eval (concat (propertize " %m " 'face 'mode-line-color-2)
+				     (propertize " " 'display arrow-right-2)))
 
-        ;; Justify right by filling with spaces to right fringe - 16
-        ;; (16 should be computed rahter than hardcoded)
-        '(:eval (propertize " " 'display '((space :align-to (- right-fringe 17)))))
+		     ;; Justify right by filling with spaces to right fringe - 16
+		     ;; (16 should be computed rahter than hardcoded)
+		     '(:eval (propertize " " 'display '((space :align-to (- right-fringe 17)))))
 
-        '(:eval (concat (propertize " " 'display arrow-left-2)
-                        (propertize " %p " 'face 'mode-line-color-2)))
-        '(:eval (concat (propertize " " 'display arrow-left-1)
-                        (propertize "%4l:%2c  " 'face 'mode-line-color-1)))
-)) 
+		     '(:eval (concat (propertize " " 'display arrow-left-2)
+				     (propertize " %p " 'face 'mode-line-color-2)))
+		     '(:eval (concat (propertize " " 'display arrow-left-1)
+				     (propertize "%4l:%2c  " 'face 'mode-line-color-1)))
+		     )) 
 
 (make-face 'mode-line-color-1)
 (set-face-attribute 'mode-line-color-1 nil
@@ -614,12 +615,5 @@ static char * arrow_right[] = {
 ;; indent-guide
 (require 'indent-guide)
 (add-hook 'c++-mode-hook 'indent-guide-mode)
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

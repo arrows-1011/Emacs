@@ -73,15 +73,6 @@
 	     (:name git-gutter :description "Emacs port of GitGutter Sublime Text 2 Plugin" :website "https://github.com/syohex/emacs-git-gutter" :type github :pkgname "syohex/emacs-git-gutter"))
  (go-mode status "installed" recipe
 	  (:name go-mode :description "Major mode for the Go programming language" :type github :pkgname "dominikh/go-mode.el"))
- (haskell-mode status "installed" recipe
-	       (:name haskell-mode :description "A Haskell editing mode" :type github :pkgname "haskell/haskell-mode" :info "." :build
-		      `(("make" ,(format "EMACS=%s" el-get-emacs)
-			 "all"))
-		      :post-init
-		      (progn
-			(require 'haskell-mode-autoloads)
-			(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-			(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))))
  (highlight-symbol status "installed" recipe
 		   (:name highlight-symbol :description "Quickly highlight a symbol throughout the buffer and cycle through its locations." :type github :pkgname "nschum/highlight-symbol.el"))
  (iedit status "installed" recipe
@@ -93,10 +84,6 @@
 		  (autoload 'js2-mode "js2-mode" nil t)))
  (let-alist status "installed" recipe
 	    (:name let-alist :description "Easily let-bind values of an assoc-list by their names." :builtin "25.1" :type http :url "http://git.savannah.gnu.org/cgit/emacs.git/plain/lisp/let-alist.el"))
- (markdown-mode status "installed" recipe
-		(:name markdown-mode :description "Major mode to edit Markdown files in Emacs" :website "http://jblevins.org/projects/markdown-mode/" :type git :url "git://jblevins.org/git/markdown-mode.git" :prepare
-		       (add-to-list 'auto-mode-alist
-				    '("\\.\\(md\\|mdown\\|markdown\\)\\'" . markdown-mode))))
  (minimap status "installed" recipe
 	  (:name minimap :description "Minimap sidebar for Emacs" :type elpa))
  (mode-compile status "installed" recipe
@@ -128,8 +115,6 @@
 		      ("SC" . "http://joseito.republika.pl/sunrise-commander/"))))))
  (perl-completion status "installed" recipe
 		  (:name perl-completion :auto-generated t :type emacswiki :description "- minor mode provides useful features for editing perl codes" :website "https://raw.github.com/emacsmirror/emacswiki.org/master/perl-completion.el"))
- (php-mode status "installed" recipe
-	   (:name php-mode :description "A PHP mode for GNU Emacs " :type github :pkgname "ejmr/php-mode" :website "https://github.com/ejmr/php-mode"))
  (pkg-info status "installed" recipe
 	   (:name pkg-info :description "Provide information about Emacs packages." :type github :pkgname "lunaryorn/pkg-info.el" :depends
 		  (dash epl)))
