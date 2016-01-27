@@ -13,11 +13,6 @@
 ;; display column line
 (setq column-number-mode t)
 
-;; Go lang indent
-(add-hook 'go-mode-hook
-	  '(lambda ()
-	     (setq tab-width 4)
-	     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Emphasis current line
@@ -64,7 +59,7 @@
 
 ;; Setting of background
 (if window-system (progn
-		    (setq initial-frame-alist '((width . 150)(height . 48)(top . 0)(left . 48)))
+		    (setq initial-frame-alist '((width . 175)(height . 60)(top . 0)(left . 48)))
 		    (set-background-color "Black")
 		    (set-foreground-color "White")
 		    (set-cursor-color "Gray")
@@ -77,6 +72,13 @@
 ;; C-e (move to end of line)
 (define-key global-map (kbd "C-e") 'move-end-of-line)
 
+
+;; load-path
+(setq load-path (append
+		 (list
+		  (expand-file-name "~/.emacs.d/elisp/el-get/tern/emacs")
+		  )
+		 load-path))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -265,7 +267,7 @@
   (require 'auto-complete-c-headers)
   (add-to-list 'ac-sources 'ac-source-c-headers)
   (add-to-list 'achead:include-directories '"/usr/local/Cellar/gcc47/4.7.4/lib/gcc/x86_64-apple-darwin12.6.0/4.7.4/include")
-  (add-to-list 'achead:include-directories '"/usr/local/Cellar/gcc47/4.7.4/lib/gcc/x86_64-apple-darwin12.6.0/4.7.4/include/c++")
+  (add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1")
   )
 
 (add-hook 'c++-mode-hook 'my:ac-c-headers-init)
@@ -307,47 +309,39 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; tabbar
-;(require 'tabbar)
-;(tabbar-mode 1)
-;
-;(setq tabbar-ruler-swap-faces t)
-;(require 'tabbar-ruler)
-;
-;(global-set-key "\M-]" 'tabbar-forward)  ; next tab
-;(global-set-key "\M-[" 'tabbar-backward) ; previous tab
-;
+(require 'tabbar)
+(tabbar-mode 1)
+
+(setq tabbar-ruler-swap-faces t)
+(require 'tabbar-ruler)
+
+(global-set-key "\M-]" 'tabbar-forward)  ; next tab
+(global-set-key "\M-[" 'tabbar-backward) ; previous tab
+
 ;; Erase the left side button
-;(dolist (btn '(tabbar-buffer-home-button
-;	       tabbar-scroll-left-button
-;	       tabbar-scroll-right-button))
-;  (set btn (cons (cons "" nil)
-;		 (cons "" nil))))
-;
-;
+(dolist (btn '(tabbar-buffer-home-button
+	       tabbar-scroll-left-button
+	       tabbar-scroll-right-button))
+  (set btn (cons (cons "" nil)
+		 (cons "" nil))))
+
+
 ;; Lenght of tab separator
-;(setq tabbar-separator '(1.5)) 
-;
+(setq tabbar-separator '(1.5)) 
+
 ;; List of display
-;(defun my-tabbar-buffer-list ()
-;  (delq nil
-;	(mapcar #'(lambda (b)
-;		    (cond
-		     ;; Always include the current buffer.
-;		     ((eq (current-buffer) b) b)
-;		     ((buffer-file-name b) b)
-;		     ((char-equal ?\  (aref (buffer-name b) 0)) nil)
-;		     ((char-equal ?* (aref (buffer-name b) 0)) nil) 
-;		     ((buffer-live-p b) b)))
-;		(buffer-list))))
-;(setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; javascript
-(autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(defun my-tabbar-buffer-list ()
+  (delq nil
+	(mapcar #'(lambda (b)
+		    (cond
+	     ;; Always include the current buffer.
+	     ((eq (current-buffer) b) b)
+		     ((buffer-file-name b) b)
+		     ((char-equal ?\  (aref (buffer-name b) 0)) nil)
+		     ((char-equal ?* (aref (buffer-name b) 0)) nil) 
+		     ((buffer-live-p b) b)))
+		(buffer-list))))
+(setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -365,9 +359,38 @@
   (setq web-mode-html-offset   2)
   (setq web-mode-css-offset    2)
   (setq indent-tabs-mode t)
-  (setq tab-width 2))
+  (setq tab-width 4)
+  )
 
 (add-hook 'web-mode-hook 'my_web-mode-hook)
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; javascript
+(require 'js2-mode)
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+(require 'tern)
+
+(add-hook 'js2-mode-hook
+          '(lambda ()
+             (setq js2-basic-offset 4)
+	     (set (make-local-variable 'js2-indent-switch-body) t)
+	     (tern-mode t)
+	     ))
+
+(eval-after-load 'tern
+  '(progn
+     (require 'tern-auto-complete)
+     (tern-ac-setup))
+  )
+
+(defun delete-tern-process ()
+  (interactive)
+  (delete-process "Tern"))
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -617,3 +640,32 @@ static char * arrow_right[] = {
 (add-hook 'c++-mode-hook 'indent-guide-mode)
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; Divide a window
+(defun split-window-vertically-n (num_wins)
+  (interactive "p")
+  (if (= num_wins 2)
+      (split-window-vertically)
+    (progn
+      (split-window-vertically
+       (- (window-height) (/ (window-height) num_wins)))
+      (split-window-vertically-n (- num_wins 1)))))
+(defun split-window-horizontally-n (num_wins)
+  (interactive "p")
+  (if (= num_wins 2)
+      (split-window-horizontally)
+    (progn
+      (split-window-horizontally
+       (- (window-width) (/ (window-width) num_wins)))
+      (split-window-horizontally-n (- num_wins 1)))))
+
+;; kbd C-t
+(defun other-window-or-split ()
+  (interactive)
+  (when (one-window-p)
+    (if (>= (window-body-width) 270)
+        (split-window-horizontally-n 3)
+      (split-window-horizontally)))
+  (other-window 1))
+(global-set-key (kbd "C-t") 'other-window-or-split)
