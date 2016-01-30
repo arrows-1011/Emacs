@@ -413,82 +413,6 @@ Run a `perldoc' on the word around point.
 
 ;;;***
 
-;;;### (autoloads nil "crosshairs/crosshairs" "crosshairs/crosshairs.el"
-;;;;;;  (22184 59467 0 0))
-;;; Generated autoloads from crosshairs/crosshairs.el
-
-(let ((loads (get 'crosshairs 'custom-loads))) (if (member '"crosshairs/crosshairs" loads) nil (put 'crosshairs 'custom-loads (cons '"crosshairs/crosshairs" loads))))
-
-(defvar crosshairs-mode nil "\
-Non-nil if Crosshairs mode is enabled.
-See the command `crosshairs-mode' for a description of this minor mode.
-Setting this variable directly does not take effect;
-either customize it (see the info node `Easy Customization')
-or call the function `crosshairs-mode'.")
-
-(custom-autoload 'crosshairs-mode "crosshairs/crosshairs" nil)
-
-(autoload 'crosshairs-mode "crosshairs/crosshairs" "\
-Toggle highlighting the current line and column.
-With ARG, turn highlighting on if and only if ARG is positive.
-
-\(fn &optional ARG)" t nil)
-
-(defalias 'toggle-crosshairs-when-idle 'crosshairs-toggle-when-idle)
-
-(autoload 'crosshairs-toggle-when-idle "crosshairs/crosshairs" "\
-Toggle highlighting the current line and column when Emacs is idle.
-With prefix argument, turn on if ARG > 0; else turn off.
-You can use commands `col-highlight-set-interval' and
-`hl-line-when-idle-interval' to change the idle times.
-
-\(fn &optional ARG)" t nil)
-
-(defalias 'flash-crosshairs 'crosshairs-flash)
-
-(autoload 'crosshairs-flash "crosshairs/crosshairs" "\
-Highlight the current line and column temporarily.
-Highlight the line for `hl-line-flash-show-period' and the column for
-`column-show-period' seconds.  With prefix argument SECONDS, highlight
-both for SECONDS seconds.
-
-\(fn &optional SECONDS)" t nil)
-
-(autoload 'crosshairs "crosshairs/crosshairs" "\
-Highlight current position with crosshairs.
-With no prefix arg, highlighting turns off at the next command.
-With a prefix arg, highlighting stays on until you toggle it off using
-`crosshairs-mode'.
-
-\(fn &optional MODALP)" t nil)
-
-(autoload 'crosshairs-highlight "crosshairs/crosshairs" "\
-Echo current position and highlight it with crosshairs.
-If optional arg MODE is `line-only', then highlight only the line.
-If optional arg MODE is `col-only', then highlight only the column.
- Interactively:
-  A non-negative prefix argument uses MODE `line-only'.
-  A negative prefix argument uses MODE `col-only'.
-
-Optional arg NOMSG non-nil means show no message.
-
-If the current buffer is not the same as the value of `orig-buff',
-then indicate the buffer, as well as the position.  Variable
-`orig-buff' is not bound here; if you want to take advantage of this
-feature in your code, then bind it.
-
-Return current position as a marker.
-
-\(fn &optional MODE NOMSG)" t nil)
-
-(autoload 'crosshairs-unhighlight "crosshairs/crosshairs" "\
-Turn off crosshairs highlighting of current position.
-Optional arg nil means do nothing if this event is a frame switch.
-
-\(fn &optional ARG)" t nil)
-
-;;;***
-
 ;;;### (autoloads (el-get el-get-self-checksum el-get-checksum el-get-make-recipes
 ;;;;;;  el-get-cd el-get-reinstall el-get-remove el-get-self-update
 ;;;;;;  el-get-update-packages-of-type el-get-update-all el-get-update
@@ -1828,6 +1752,38 @@ Setup auto-complete for tern-mode.
 
 ;;;***
 
+;;;### (autoloads nil "vline/vline" "vline/vline.el" (22185 58128
+;;;;;;  0 0))
+;;; Generated autoloads from vline/vline.el
+
+(autoload 'vline-mode "vline/vline" "\
+Display vertical line mode.
+
+\(fn &optional ARG)" t nil)
+
+(defvar vline-global-mode nil "\
+Non-nil if Vline-Global mode is enabled.
+See the command `vline-global-mode' for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `vline-global-mode'.")
+
+(custom-autoload 'vline-global-mode "vline/vline" nil)
+
+(autoload 'vline-global-mode "vline/vline" "\
+Toggle Vline mode in all buffers.
+With prefix ARG, enable Vline-Global mode if ARG is positive;
+otherwise, disable it.  If called from Lisp, enable the mode if
+ARG is omitted or nil.
+
+Vline mode is enabled in all buffers where
+`(lambda nil (unless (minibufferp) (vline-mode 1)))' would do it.
+See `vline-mode' for more information on Vline mode.
+
+\(fn &optional ARG)" t nil)
+
+;;;***
+
 ;;;### (autoloads (web-mode) "web-mode/web-mode" "web-mode/web-mode.el"
 ;;;;;;  (21876 30557 0 0))
 ;;; Generated autoloads from web-mode/web-mode.el
@@ -1836,6 +1792,49 @@ Setup auto-complete for tern-mode.
 Major mode for editing web templates.
 
 \(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "yasnippet/yasnippet" "yasnippet/yasnippet.el"
+;;;;;;  (22187 24372 0 0))
+;;; Generated autoloads from yasnippet/yasnippet.el
+
+(autoload 'yas-minor-mode "yasnippet/yasnippet" "\
+Toggle YASnippet mode.
+
+When YASnippet mode is enabled, `yas-expand', normally bound to
+the TAB key, expands snippets of code depending on the major
+mode.
+
+With no argument, this command toggles the mode.
+positive prefix argument turns on the mode.
+Negative prefix argument turns off the mode.
+
+Key bindings:
+\\{yas-minor-mode-map}
+
+\(fn &optional ARG)" t nil)
+
+(defvar yas-global-mode nil "\
+Non-nil if Yas-Global mode is enabled.
+See the command `yas-global-mode' for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `yas-global-mode'.")
+
+(custom-autoload 'yas-global-mode "yasnippet/yasnippet" nil)
+
+(autoload 'yas-global-mode "yasnippet/yasnippet" "\
+Toggle Yas minor mode in all buffers.
+With prefix ARG, enable Yas-Global mode if ARG is positive;
+otherwise, disable it.  If called from Lisp, enable the mode if
+ARG is omitted or nil.
+
+Yas minor mode is enabled in all buffers where
+`yas-minor-mode-on' would do it.
+See `yas-minor-mode' for more information on Yas minor mode.
+
+\(fn &optional ARG)" t nil)
 
 ;;;***
 
@@ -1862,7 +1861,9 @@ Major mode for editing web templates.
 ;;;;;;  "minimap/minimap-pkg.el" "perl-completion/perl-completion.el"
 ;;;;;;  "popup/popup.el" "powerline/powerline-separators.el" "tabbar/aquamacs-compat.el"
 ;;;;;;  "tabbar/aquamacs-tabbar.el" "tabbar/aquamacs-tools.el" "tabbar/one-buffer-one-frame.el"
-;;;;;;  "tabbar/tabbar-window.el") (22184 59467 493219 0))
+;;;;;;  "tabbar/tabbar-window.el" "yasnippet-config/yasnippet-config.el"
+;;;;;;  "yasnippet/yasnippet-debug.el" "yasnippet/yasnippet-tests.el")
+;;;;;;  (22187 24943 917867 0))
 
 ;;;***
 

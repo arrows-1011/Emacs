@@ -79,6 +79,26 @@
 		  (expand-file-name "~/.emacs.d/elisp/el-get/tern/emacs")
 		  )
 		 load-path))
+
+
+;; Character code
+(set-language-environment  'utf-8)
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq default-file-name-coding-system 'shift_jis)
+
+;; font
+(set-fontset-font (frame-parameter nil 'font)
+                  'japanese-jisx0208
+                  (cons "Ricty Discord" "iso10646-1"))
+(set-fontset-font (frame-parameter nil 'font)
+                  'japanese-jisx0212
+                  (cons "Ricty Discord" "iso10646-1"))
+(set-fontset-font (frame-parameter nil 'font)
+                  'katakana-jisx0201
+                  (cons "Ricty Discord" "iso10646-1"))
+
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -267,6 +287,7 @@
   (require 'auto-complete-c-headers)
   (add-to-list 'ac-sources 'ac-source-c-headers)
   (add-to-list 'achead:include-directories '"/usr/local/Cellar/gcc47/4.7.4/lib/gcc/x86_64-apple-darwin12.6.0/4.7.4/include")
+  (add-to-list 'achead:include-directories '"/usr/local/Cellar/gcc47/4.7.4/lib/gcc/x86_64-apple-darwin12.6.0/4.7.4/include/c++")
   (add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1")
   )
 
@@ -277,7 +298,7 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;  el-get 
+;  el-get 
 
 ;; path
 (add-to-list 'load-path (locate-user-emacs-file "elisp/el-get/el-get/"))
@@ -356,10 +377,13 @@
 ;; indent
 (defun my_web-mode-hook ()
   "Hooks for Web mode."
-  (setq web-mode-html-offset   2)
-  (setq web-mode-css-offset    2)
+  (setq web-mode-markup-indent-offset 4)
+  (setq web-mode-css-indent-offset 4)
+  (setq web-mode-script-padding 4)
+  (setq web-mode-style-padding 4)
+  (setq web-mode-code-indent-offset 4)
+  (setq web-mode-block-padding 4)
   (setq indent-tabs-mode t)
-  (setq tab-width 4)
   )
 
 (add-hook 'web-mode-hook 'my_web-mode-hook)
@@ -642,6 +666,7 @@ static char * arrow_right[] = {
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Divide a window
 (defun split-window-vertically-n (num_wins)
   (interactive "p")
@@ -669,3 +694,24 @@ static char * arrow_right[] = {
       (split-window-horizontally)))
   (other-window 1))
 (global-set-key (kbd "C-t") 'other-window-or-split)
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Align code
+(require 'align)
+(add-to-list 'align-rules-list
+	     '(ruby-xmpfilter-mark
+	       (regexp . "\\(\\s-*\\)# =>")
+	       (modes  . '(ruby-mode))))
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; yasnippet
+; (require 'yasnippet)
+; (yas-global-mode 1)
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

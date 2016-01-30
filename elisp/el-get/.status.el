@@ -138,5 +138,10 @@
 			   '("\\.tern-\\(project\\|\\config\\)\\'" . json-mode))
 	      :load-path
 	      ("emacs")))
+ (vline status "installed" recipe
+	(:name vline :description "show vertical line (column highlighting) mode." :type emacswiki :features vline))
  (web-mode status "installed" recipe
-	   (:name web-mode :description "emacs major mode for editing PHP/JSP/ASP HTML templates (with embedded CSS and JS blocks)" :type github :pkgname "fxbois/web-mode")))
+	   (:name web-mode :description "emacs major mode for editing PHP/JSP/ASP HTML templates (with embedded CSS and JS blocks)" :type github :pkgname "fxbois/web-mode"))
+ (yasnippet status "installed" recipe
+	    (:name yasnippet :website "https://github.com/capitaomorte/yasnippet.git" :description "YASnippet is a template system for Emacs." :type github :pkgname "capitaomorte/yasnippet" :compile "yasnippet.el" :submodule nil :build
+		   (("git" "submodule" "update" "--init" "--" "snippets")))))
