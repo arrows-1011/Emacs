@@ -38,6 +38,7 @@ pair
 pop
 pop_back
 pop_front
+pow
 printf
 priority_queue
 push
@@ -56,7 +57,6 @@ set
 size
 sort
 stack
-std::
 strcat
 strcmp
 strcpy

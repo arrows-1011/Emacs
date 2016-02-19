@@ -1,4 +1,12 @@
-((apel status "installed" recipe
+((ac-irony status "installed" recipe
+	   (:name ac-irony :description "Auto-complete completion source for irony-mode." :type github :pkgname "Sarcasm/ac-irony"))
+ (anything status "installed" recipe
+	   (:name anything :website "http://www.emacswiki.org/emacs/Anything" :description "Open anything / QuickSilver-like candidate-selection framework" :type git :url "http://repo.or.cz/r/anything-config.git" :shallow nil :load-path
+		  ("." "extensions" "contrib")
+		  :features anything))
+ (anything-match-plugin status "installed" recipe
+			(:name anything-match-plugin :auto-generated t :type emacswiki :description "Multiple regexp matching methods for anything" :website "https://raw.github.com/emacsmirror/emacswiki.org/master/anything-match-plugin.el"))
+ (apel status "installed" recipe
        (:name apel :website "http://www.kanji.zinbun.kyoto-u.ac.jp/~tomo/elisp/APEL/" :description "APEL (A Portable Emacs Library) is a library to support to write portable Emacs Lisp programs." :type github :pkgname "wanderlust/apel" :build
 	      (mapcar
 	       (lambda
@@ -29,6 +37,12 @@
 			(:name auto-highlight-symbol :type github :pkgname "emacsmirror/auto-highlight-symbol" :description "Automatic highlighting current symbol minor mode" :website "https://github.com/emacsmirror/auto-highlight-symbol/"))
  (cl-lib status "installed" recipe
 	 (:name cl-lib :builtin "24.3" :type elpa :description "Properly prefixed CL functions and macros" :url "http://elpa.gnu.org/packages/cl-lib.html"))
+ (company-irony status "installed" recipe
+		(:name company-irony :description "company-mode completion back-end for irony-mode" :type github :depends
+		       (company-mode irony-mode cl-lib)
+		       :pkgname "Sarcasm/company-irony"))
+ (company-mode status "installed" recipe
+	       (:name company-mode :website "http://company-mode.github.io/" :description "Modular in-buffer completion framework for Emacs" :type github :pkgname "company-mode/company-mode"))
  (cperl-mode status "installed" recipe
 	     (:name cperl-mode :website "https://github.com/jrockway/cperl-mode" :description "Perl code editing commands for Emacs" :type github :pkgname "jrockway/cperl-mode" :depends mode-compile :compile "cperl-mode.el" :provide cperl-mode :post-init
 		    (defalias 'perl-mode 'cperl-mode)))
@@ -77,11 +91,19 @@
 	(:name iedit :description "Edit multiple regions with the same content simultaneously." :type emacswiki :features iedit))
  (indent-guide status "installed" recipe
 	       (:name indent-guide :description "show vertical lines to guide indentation." :website "https://github.com/zk-phi/indent-guide" :type github :pkgname "zk-phi/indent-guide"))
+ (irony-mode status "installed" recipe
+	     (:name irony-mode :description "A C/C++ minor mode for Emacs powered by libclang" :type github :pkgname "Sarcasm/irony-mode" :depends
+		    (cl-lib)
+		    :compile "\\.el$"))
  (js2-mode status "installed" recipe
 	   (:name js2-mode :website "https://github.com/mooz/js2-mode#readme" :description "An improved JavaScript editing mode" :type github :pkgname "mooz/js2-mode" :prepare
 		  (autoload 'js2-mode "js2-mode" nil t)))
  (let-alist status "installed" recipe
 	    (:name let-alist :description "Easily let-bind values of an assoc-list by their names." :builtin "25.1" :type http :url "http://git.savannah.gnu.org/cgit/emacs.git/plain/lisp/let-alist.el"))
+ (markdown-mode status "installed" recipe
+		(:name markdown-mode :description "Major mode to edit Markdown files in Emacs" :website "http://jblevins.org/projects/markdown-mode/" :type git :url "git://jblevins.org/git/markdown-mode.git" :prepare
+		       (add-to-list 'auto-mode-alist
+				    '("\\.\\(md\\|mdown\\|markdown\\)\\'" . markdown-mode))))
  (minimap status "installed" recipe
 	  (:name minimap :description "Minimap sidebar for Emacs" :type elpa))
  (mode-compile status "installed" recipe
@@ -113,6 +135,10 @@
 		      ("SC" . "http://joseito.republika.pl/sunrise-commander/"))))))
  (perl-completion status "installed" recipe
 		  (:name perl-completion :auto-generated t :type emacswiki :description "- minor mode provides useful features for editing perl codes" :website "https://raw.github.com/emacsmirror/emacswiki.org/master/perl-completion.el"))
+ (php-completion status "installed" recipe
+		 (:name php-completion :auto-generated t :type emacswiki :description "-- complete everything PHP with Anything.el" :website "https://raw.github.com/emacsmirror/emacswiki.org/master/php-completion.el"))
+ (php-mode status "installed" recipe
+	   (:name php-mode :description "A PHP mode for GNU Emacs " :type github :pkgname "ejmr/php-mode" :website "https://github.com/ejmr/php-mode"))
  (pkg-info status "installed" recipe
 	   (:name pkg-info :description "Provide information about Emacs packages." :type github :pkgname "lunaryorn/pkg-info.el" :depends
 		  (dash epl)))

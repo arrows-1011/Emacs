@@ -59,7 +59,7 @@
 
 ;; Setting of background
 (if window-system (progn
-		    (setq initial-frame-alist '((width . 175)(height . 60)(top . 0)(left . 48)))
+		    (setq initial-frame-alist '((width . 155)(height . 57)(top . 0)(left . 58)))
 		    (set-background-color "Black")
 		    (set-foreground-color "White")
 		    (set-cursor-color "Gray")
@@ -106,13 +106,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; C, C++ basic setting
 
-;; C tab 4
-(defun my-c-tab ()
-  (c-set-style "stroustrup")  
-  )
-
-(add-hook 'c-mode-hook 'my-c-tab)
-
 ;; C, C++ no tab
 (defun my-c-c++-mode-init ()
   (setq indent-tabs-mode nil)
@@ -148,6 +141,11 @@
 (add-hook 'c-mode-hook 'my-c-c++-mode-conf)
 (add-hook 'c++-mode-hook 'my-c-c++-mode-conf)
 
+
+;; C++ (.h -> C++ file)
+(setq auto-mode-alist
+      (append '(("\\.h$" . c++-mode))
+              auto-mode-alist))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -281,6 +279,7 @@
 (add-hook 'latex-mode-hook 'my:ac-init)
 (add-hook 'html-mode 'my:ac-init)
 (add-hook 'web-mode 'my:ac-init)
+(setq ac-use-fuzzy t)
 
 ;; c-header
 (defun my:ac-c-headers-init ()
@@ -347,7 +346,7 @@
 		 (cons "" nil))))
 
 
-;; Lenght of tab separator
+;; Length of tab separator
 (setq tabbar-separator '(1.5)) 
 
 ;; List of display
@@ -478,6 +477,22 @@
             (display-buffer buffer)))))))
 
 (global-set-key (kbd "M-m") 'perldoc-m)
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; PHP
+(require 'php-mode)
+(add-hook 'php-mode-hook
+         (lambda ()
+             (require 'php-completion)
+             (php-completion-mode t)
+             (define-key php-mode-map (kbd "C-o") 'phpcmp-complete)
+             (when (require 'auto-complete nil t)
+             (make-variable-buffer-local 'ac-sources)
+             (add-to-list 'ac-sources 'ac-source-php-completion)
+             (auto-complete-mode t))))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -711,7 +726,35 @@ static char * arrow_right[] = {
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; yasnippet
-; (require 'yasnippet)
-; (yas-global-mode 1)
+(eval-after-load "yasnippet"
+  '(progn
+     (define-key yas-keymap (kbd "<tab>") nil)
+     (yas-global-mode 1)))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; markdown
+(setq markdown-command "multimarkdown")
+
+(require 'markdown-mode)
+
+;; Set up for markdown
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.txt\\'" . markdown-mode))
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;(setenv "LD_LIBRARY_PATH" "Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib")
+;; irony mode
+;(require 'irony)
+;(require 'ac-irony)
+
+;(defun my:irony-enable()
+;  (when (member major-mode irony-known-modes)
+;    (irony-mode 1)))
+
+;(add-hook 'c-mode-hook 'my:irony-enable)
+;(add-hook 'c++-mode-hook 'my:irony-enable)

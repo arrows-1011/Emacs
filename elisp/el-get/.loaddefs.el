@@ -3,6 +3,1028 @@
 ;;; Code:
 
 
+;;;### (autoloads nil "ac-irony/ac-irony" "ac-irony/ac-irony.el"
+;;;;;;  (22201 52533 0 0))
+;;; Generated autoloads from ac-irony/ac-irony.el
+
+(defvar ac-source-irony '((cache) (requires . -1) (limit) (prefix . ac-irony-prefix) (candidates . ac-irony-candidates)))
+
+(autoload 'ac-complete-irony "ac-irony/ac-irony" "\
+
+
+\(fn)" t nil)
+
+(autoload 'ac-complete-irony-async "ac-irony/ac-irony" "\
+
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "anything-match-plugin/anything-match-plugin"
+;;;;;;  "anything-match-plugin/anything-match-plugin.el" (22205 35037
+;;;;;;  0 0))
+;;; Generated autoloads from anything-match-plugin/anything-match-plugin.el
+
+(autoload 'anything-mp-toggle-match-plugin "anything-match-plugin/anything-match-plugin" "\
+Turn on/off multiple regexp matching in anything.
+i.e anything-match-plugin.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "anything/anything" "anything/anything.el"
+;;;;;;  (22205 35000 0 0))
+;;; Generated autoloads from anything/anything.el
+
+(autoload 'anything "anything/anything" "\
+Main function to execute anything sources.
+
+Keywords supported:
+:sources :input :prompt :resume :preselect :buffer :keymap :default :history
+Extra keywords are supported and can be added, see below.
+
+When call interactively with no arguments deprecated `anything-sources'
+will be used if non--nil.
+
+PLIST is a list like (:key1 val1 :key2 val2 ...) or
+\(&optional sources input prompt resume preselect buffer keymap default history).
+
+Basic keywords are the following:
+
+:sources
+
+Temporary value of `anything-sources'.  It also accepts a
+symbol, interpreted as a variable of an anything source.  It
+also accepts an alist representing an anything source, which is
+detected by (assq 'name ANY-SOURCES)
+
+:input
+
+Temporary value of `anything-pattern', ie. initial input of minibuffer.
+
+:prompt
+
+Prompt other than \"pattern: \".
+
+:resume
+
+If t, Resurrect previously instance of `anything'.  Skip the initialization.
+If 'noresume, this instance of `anything' cannot be resumed.
+
+:preselect
+
+Initially selected candidate.  Specified by exact candidate or a regexp.
+
+:buffer
+
+`anything-buffer' instead of *anything*.
+
+:keymap
+
+`anything-map' for current `anything' session.
+
+:default
+
+A default argument that will be inserted in minibuffer with \\<minibuffer-local-map>\\[next-history-element].
+When nil of not present `thing-at-point' will be used instead.
+
+:history
+
+By default all minibuffer input is pushed to `minibuffer-history',
+if an argument HISTORY is provided, input will be pushed to HISTORY.
+History element should be a symbol.
+
+Of course, conventional arguments are supported, the two are same.
+
+\(anything :sources sources :input input :prompt prompt :resume resume
+           :preselect preselect :buffer buffer :keymap keymap :default default
+           :history history)
+\(anything sources input prompt resume preselect buffer keymap default history)
+
+Other keywords are interpreted as local variables of this anything session.
+The `anything-' prefix can be omitted.  For example,
+
+\(anything :sources 'anything-c-source-buffers
+           :buffer \"*buffers*\" :candidate-number-limit 10)
+
+means starting anything session with `anything-c-source-buffers'
+source in *buffers* buffer and set variable `anything-candidate-number-limit'
+to 10 as session local variable.
+
+\(fn &rest PLIST)" t nil)
+
+(autoload 'anything-at-point "anything/anything" "\
+Call anything with symbol at point as initial input.
+ANY-SOURCES ANY-INPUT ANY-PROMPT ANY-RESUME ANY-PRESELECT and ANY-BUFFER
+are same args as in `anything'.
+
+\(fn &optional ANY-SOURCES ANY-INPUT ANY-PROMPT ANY-RESUME ANY-PRESELECT ANY-BUFFER)" t nil)
+
+(autoload 'anything-other-buffer "anything/anything" "\
+Simplified interface of `anything' with other `anything-buffer'.
+Call `anything' with only ANY-SOURCES and ANY-BUFFER as args.
+
+\(fn ANY-SOURCES ANY-BUFFER)" nil nil)
+
+;;;***
+
+;;;### (autoloads nil "anything/anything-config" "anything/anything-config.el"
+;;;;;;  (22205 35000 0 0))
+;;; Generated autoloads from anything/anything-config.el
+
+(autoload 'anything-configuration "anything/anything-config" "\
+Customize `anything'.
+
+\(fn)" t nil)
+
+(defvar anything-command-map)
+
+(autoload 'anything-c-buffer-help "anything/anything-config" "\
+Help command for anything buffers.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-help "anything/anything-config" "\
+Help command for `anything-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-read-file-name-help "anything/anything-config" "\
+
+
+\(fn)" t nil)
+
+(autoload 'anything-generic-file-help "anything/anything-config" "\
+
+
+\(fn)" t nil)
+
+(autoload 'anything-grep-help "anything/anything-config" "\
+
+
+\(fn)" t nil)
+
+(autoload 'anything-pdfgrep-help "anything/anything-config" "\
+
+
+\(fn)" t nil)
+
+(autoload 'anything-etags-help "anything/anything-config" "\
+The help function for etags.
+
+\(fn)" t nil)
+
+(autoload 'anything-test-sources "anything/anything-config" "\
+List all anything sources for test.
+The output is sexps which are evaluated by \\[eval-last-sexp].
+
+\(fn)" t nil)
+
+(autoload 'anything-insert-buffer-name "anything/anything-config" "\
+Insert buffer name.
+
+\(fn)" t nil)
+
+(autoload 'anything-mark-all "anything/anything-config" "\
+Mark all visible unmarked candidates in current source.
+
+\(fn)" t nil)
+
+(autoload 'anything-unmark-all "anything/anything-config" "\
+Unmark all candidates in all sources of current anything session.
+
+\(fn)" t nil)
+
+(autoload 'anything-toggle-all-marks "anything/anything-config" "\
+Toggle all marks.
+Mark all visible candidates of current source or unmark all candidates
+visible or invisible in all sources of current anything session
+
+\(fn)" t nil)
+
+(autoload 'anything-buffer-diff-persistent "anything/anything-config" "\
+Toggle diff buffer without quitting anything.
+
+\(fn)" t nil)
+
+(autoload 'anything-buffer-revert-persistent "anything/anything-config" "\
+Revert buffer without quitting anything.
+
+\(fn)" t nil)
+
+(autoload 'anything-buffer-save-persistent "anything/anything-config" "\
+Save buffer without quitting anything.
+
+\(fn)" t nil)
+
+(autoload 'anything-buffer-run-kill-buffers "anything/anything-config" "\
+Run kill buffer action from `anything-c-source-buffers-list'.
+
+\(fn)" t nil)
+
+(autoload 'anything-buffer-run-grep "anything/anything-config" "\
+Run Grep action from `anything-c-source-buffers-list'.
+
+\(fn)" t nil)
+
+(autoload 'anything-buffer-run-zgrep "anything/anything-config" "\
+Run Grep action from `anything-c-source-buffers-list'.
+
+\(fn)" t nil)
+
+(autoload 'anything-buffer-run-query-replace-regexp "anything/anything-config" "\
+Run Query replace regexp action from `anything-c-source-buffers-list'.
+
+\(fn)" t nil)
+
+(autoload 'anything-buffer-run-query-replace "anything/anything-config" "\
+Run Query replace action from `anything-c-source-buffers-list'.
+
+\(fn)" t nil)
+
+(autoload 'anything-buffer-switch-other-window "anything/anything-config" "\
+Run switch to other window action from `anything-c-source-buffers-list'.
+
+\(fn)" t nil)
+
+(autoload 'anything-buffer-switch-other-frame "anything/anything-config" "\
+Run switch to other frame action from `anything-c-source-buffers-list'.
+
+\(fn)" t nil)
+
+(autoload 'anything-buffer-switch-to-elscreen "anything/anything-config" "\
+Run switch to elscreen  action from `anything-c-source-buffers-list'.
+
+\(fn)" t nil)
+
+(autoload 'anything-buffer-run-ediff "anything/anything-config" "\
+Run ediff action from `anything-c-source-buffers-list'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-toggle-auto-update "anything/anything-config" "\
+
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-switch-to-history "anything/anything-config" "\
+Run Switch to history action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-grep "anything/anything-config" "\
+Run Grep action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-pdfgrep "anything/anything-config" "\
+Run Pdfgrep action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-zgrep "anything/anything-config" "\
+Run Grep action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-copy-file "anything/anything-config" "\
+Run Copy file action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-rename-file "anything/anything-config" "\
+Run Rename file action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-byte-compile-file "anything/anything-config" "\
+Run Byte compile file action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-load-file "anything/anything-config" "\
+Run Load file action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-eshell-command-on-file "anything/anything-config" "\
+Run eshell command on file action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-ediff-file "anything/anything-config" "\
+Run Ediff file action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-ediff-merge-file "anything/anything-config" "\
+Run Ediff merge file action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-symlink-file "anything/anything-config" "\
+Run Symlink file action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-hardlink-file "anything/anything-config" "\
+Run Hardlink file action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-delete-file "anything/anything-config" "\
+Run Delete file action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-complete-fn-at-point "anything/anything-config" "\
+Run complete file name action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-switch-to-eshell "anything/anything-config" "\
+Run switch to eshell action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-switch-other-window "anything/anything-config" "\
+Run switch to other window action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-switch-other-frame "anything/anything-config" "\
+Run switch to other frame action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-open-file-externally "anything/anything-config" "\
+Run open file externally command action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-locate "anything/anything-config" "\
+Run locate action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-gnus-attach-files "anything/anything-config" "\
+Run gnus attach files command action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-etags "anything/anything-config" "\
+Run Etags command action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-print-file "anything/anything-config" "\
+Run Print file action from `anything-c-source-find-files'.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-properties-persistent "anything/anything-config" "\
+Show properties without quitting anything.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-persistent-delete "anything/anything-config" "\
+Delete current candidate without quitting.
+
+\(fn)" t nil)
+
+(autoload 'anything-ff-run-kill-buffer-persistent "anything/anything-config" "\
+Execute `anything-ff-kill-buffer-fname' whitout quitting.
+
+\(fn)" t nil)
+
+(defvar anything-dired-mode "Enable anything completion in Dired functions.\nBindings affected are C, R, S, H.\nThis is deprecated for Emacs24+ users, use `ac-mode' instead." "\
+Non-nil if Anything-Dired mode is enabled.
+See the command `anything-dired-mode' for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `anything-dired-mode'.")
+
+(custom-autoload 'anything-dired-mode "anything/anything-config" nil)
+
+(autoload 'anything-dired-mode "anything/anything-config" "\
+Toggle Anything-Dired mode on or off.
+With a prefix argument ARG, enable Anything-Dired mode if ARG is
+positive, and disable it otherwise.  If called from Lisp, enable
+the mode if ARG is omitted or nil, and toggle it if ARG is `toggle'.
+\\{anything-dired-mode-map}
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'anything-c-goto-precedent-file "anything/anything-config" "\
+Go to precedent file in anything grep/etags buffers.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-goto-next-file "anything/anything-config" "\
+Go to precedent file in anything grep/etags buffers.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-grep-run-persistent-action "anything/anything-config" "\
+Run grep persistent action from `anything-do-grep-1'.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-grep-run-default-action "anything/anything-config" "\
+Run grep default action from `anything-do-grep-1'.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-grep-run-other-window-action "anything/anything-config" "\
+Run grep goto other window action from `anything-do-grep-1'.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-grep-run-save-buffer "anything/anything-config" "\
+Run grep save results action from `anything-do-grep-1'.
+
+\(fn)" t nil)
+
+(autoload 'anything-yank-text-at-point "anything/anything-config" "\
+Yank text at point in minibuffer.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-bookmark-run-jump-other-window "anything/anything-config" "\
+Jump to bookmark from keyboard.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-bookmark-run-delete "anything/anything-config" "\
+Delete bookmark from keyboard.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-bmkext-run-edit "anything/anything-config" "\
+Run `bmkext-edit-bookmark' from keyboard.
+
+\(fn)" t nil)
+
+(autoload 'anything-yaoddmuse-cache-pages "anything/anything-config" "\
+Fetch the list of files on emacswiki and create cache file.
+If load is non--nil load the file and feed `yaoddmuse-pages-hash'.
+
+\(fn &optional LOAD)" t nil)
+
+(defvar anything-completion-mode nil "\
+Non-nil if Anything-Completion mode is enabled.
+See the command `anything-completion-mode' for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `anything-completion-mode'.")
+
+(custom-autoload 'anything-completion-mode "anything/anything-config" nil)
+
+(autoload 'anything-completion-mode "anything/anything-config" "\
+Toggle generic anything completion.
+
+All functions in Emacs that use `completing-read'
+or `read-file-name' and friends will use anything interface
+when this mode is turned on.
+However you can modify this behavior for functions of your choice
+with `anything-completing-read-handlers-alist'.
+
+Called with a positive arg, turn on unconditionally, with a
+negative arg turn off.
+You can turn it on with `ac-mode'.
+
+Some crap emacs functions may not be supported,
+e.g `ffap-alternate-file' and maybe others
+You can add such functions to `anything-completing-read-handlers-alist'
+with a nil value.
+
+Note: This mode will work only partially on Emacs23.
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'anything-lisp-completion-at-point "anything/anything-config" "\
+Anything lisp symbol completion at point.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-complete-file-name-at-point "anything/anything-config" "\
+Complete file name at point.
+
+\(fn)" t nil)
+
+(autoload 'anything-lisp-completion-at-point-or-indent "anything/anything-config" "\
+First call indent and second call complete lisp symbol.
+The second call should happen before `anything-lisp-completion-or-indent-delay',
+after this delay, next call will indent again.
+After completion, next call is always indent.
+See that like click and double mouse click.
+One hit indent, two quick hits maybe indent and complete.
+
+\(fn ARG)" t nil)
+
+(autoload 'anything-lisp-completion-or-file-name-at-point "anything/anything-config" "\
+Complete lisp symbol or filename at point.
+Filename completion happen if filename is started in
+or between double quotes.
+
+\(fn)" t nil)
+
+(autoload 'anything-w32-shell-execute-open-file "anything/anything-config" "\
+
+
+\(fn FILE)" t nil)
+
+(autoload 'anything-c-call-interactively "anything/anything-config" "\
+Execute CMD-OR-NAME as Emacs command.
+It is added to `extended-command-history'.
+`anything-current-prefix-arg' is used as the command's prefix argument.
+
+\(fn CMD-OR-NAME)" nil nil)
+
+(autoload 'anything-c-set-variable "anything/anything-config" "\
+Set value to VAR interactively.
+
+\(fn VAR)" t nil)
+
+(autoload 'anything-c-reset-adaptative-history "anything/anything-config" "\
+Delete all `anything-c-adaptive-history' and his file.
+Useful when you have a old or corrupted `anything-c-adaptive-history-file'.
+
+\(fn)" t nil)
+
+(autoload 'anything-mini "anything/anything-config" "\
+Preconfigured `anything' lightweight version (buffer -> recentf).
+
+\(fn)" t nil)
+
+(autoload 'anything-for-files "anything/anything-config" "\
+Preconfigured `anything' for opening files.
+ffap -> recentf -> buffer -> bookmark -> file-cache -> files-in-current-dir -> locate.
+
+\(fn)" t nil)
+
+(autoload 'anything-recentf "anything/anything-config" "\
+Preconfigured `anything' for `recentf'.
+
+\(fn)" t nil)
+
+(autoload 'anything-info-at-point "anything/anything-config" "\
+Preconfigured `anything' for searching info at point.
+With a prefix-arg insert symbol at point.
+
+\(fn ARG)" t nil)
+
+(autoload 'anything-show-kill-ring "anything/anything-config" "\
+Preconfigured `anything' for `kill-ring'.
+It is drop-in replacement of `yank-pop'.
+You may bind this command to M-y.
+First call open the kill-ring browser, next calls move to next line.
+
+\(fn)" t nil)
+
+(autoload 'anything-minibuffer-history "anything/anything-config" "\
+Preconfigured `anything' for `minibuffer-history'.
+
+\(fn)" t nil)
+
+(autoload 'anything-gentoo "anything/anything-config" "\
+Preconfigured `anything' for gentoo linux.
+
+\(fn)" t nil)
+
+(autoload 'anything-imenu "anything/anything-config" "\
+Preconfigured `anything' for `imenu'.
+
+\(fn)" t nil)
+
+(autoload 'anything-google-suggest "anything/anything-config" "\
+Preconfigured `anything' for google search with google suggest.
+
+\(fn)" t nil)
+
+(autoload 'anything-yahoo-suggest "anything/anything-config" "\
+Preconfigured `anything' for Yahoo searching with Yahoo suggest.
+
+\(fn)" t nil)
+
+(autoload 'anything-for-buffers "anything/anything-config" "\
+Preconfigured `anything' for buffers.
+
+\(fn)" t nil)
+
+(autoload 'anything-buffers-list "anything/anything-config" "\
+Preconfigured `anything' to list buffers.
+It is an enhanced version of `anything-for-buffers'.
+
+\(fn)" t nil)
+
+(autoload 'anything-bbdb "anything/anything-config" "\
+Preconfigured `anything' for BBDB.
+
+Needs BBDB.
+
+http://bbdb.sourceforge.net/
+
+\(fn)" t nil)
+
+(autoload 'anything-locate "anything/anything-config" "\
+Preconfigured `anything' for Locate.
+Note: you can add locate options after entering pattern.
+See 'man locate' for valid options.
+
+You can specify a specific database with prefix argument ARG (C-u).
+Many databases can be used: navigate and mark them.
+See also `anything-locate-with-db'.
+
+To create a user specific db, use
+\"updatedb -l 0 -o db_path -U directory\".
+Where db_path is a filename matched by
+`anything-locate-db-file-regexp'.
+
+\(fn ARG)" t nil)
+
+(autoload 'anything-w3m-bookmarks "anything/anything-config" "\
+Preconfigured `anything' for w3m bookmark.
+
+Needs w3m and emacs-w3m.
+
+w3m: http://w3m.sourceforge.net/
+emacs-w3m: http://emacs-w3m.namazu.org/
+
+\(fn)" t nil)
+
+(autoload 'anything-firefox-bookmarks "anything/anything-config" "\
+Preconfigured `anything' for firefox bookmark.
+You will have to enable html bookmarks in firefox:
+open about:config in firefox and double click on this line to enable value to true:
+
+user_pref(\"browser.bookmarks.autoExportHTML\", false);
+
+You should have now:
+
+user_pref(\"browser.bookmarks.autoExportHTML\", true);
+
+After closing firefox, you will be able to browse you bookmarks.
+
+\(fn)" t nil)
+
+(autoload 'anything-colors "anything/anything-config" "\
+Preconfigured `anything' for color.
+
+\(fn)" t nil)
+
+(autoload 'anything-bookmarks "anything/anything-config" "\
+Preconfigured `anything' for bookmarks.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-pp-bookmarks "anything/anything-config" "\
+Preconfigured `anything' for bookmarks (pretty-printed).
+
+\(fn)" t nil)
+
+(autoload 'anything-c-insert-latex-math "anything/anything-config" "\
+Preconfigured anything for latex math symbols completion.
+
+\(fn)" t nil)
+
+(autoload 'anything-register "anything/anything-config" "\
+Preconfigured `anything' for Emacs registers.
+
+\(fn)" t nil)
+
+(autoload 'anything-man-woman "anything/anything-config" "\
+Preconfigured `anything' for Man and Woman pages.
+
+\(fn)" t nil)
+
+(autoload 'anything-org-keywords "anything/anything-config" "\
+Preconfigured `anything' for org keywords.
+
+\(fn)" t nil)
+
+(autoload 'anything-emms "anything/anything-config" "\
+Preconfigured `anything' for emms sources.
+
+\(fn)" t nil)
+
+(autoload 'anything-eev-anchors "anything/anything-config" "\
+Preconfigured `anything' for eev anchors.
+
+\(fn)" t nil)
+
+(autoload 'anything-bm-list "anything/anything-config" "\
+Preconfigured `anything' for visible bookmarks.
+
+Needs bm.el
+
+http://cvs.savannah.gnu.org/viewvc/*checkout*/bm/bm/bm.el
+
+\(fn)" t nil)
+
+(autoload 'anything-timers "anything/anything-config" "\
+Preconfigured `anything' for timers.
+
+\(fn)" t nil)
+
+(autoload 'anything-list-emacs-process "anything/anything-config" "\
+Preconfigured `anything' for emacs process.
+
+\(fn)" t nil)
+
+(autoload 'anything-occur "anything/anything-config" "\
+Preconfigured Anything for Occur source.
+If region is active, search only in region,
+otherwise search in whole buffer.
+
+\(fn)" t nil)
+
+(autoload 'anything-browse-code "anything/anything-config" "\
+Preconfigured anything to browse code.
+
+\(fn)" t nil)
+
+(autoload 'anything-org-headlines "anything/anything-config" "\
+Preconfigured anything to show org headlines.
+
+\(fn)" t nil)
+
+(autoload 'anything-regexp "anything/anything-config" "\
+Preconfigured anything to build regexps.
+`query-replace-regexp' can be run from there against found regexp.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-copy-files-async "anything/anything-config" "\
+Preconfigured anything to copy file list FLIST to DEST asynchronously.
+
+\(fn)" t nil)
+
+(autoload 'anything-find-files "anything/anything-config" "\
+Preconfigured `anything' for anything implementation of `find-file'.
+Called with a prefix arg show history if some.
+Don't call it from programs, use `anything-find-files-1' instead.
+This is the starting point for nearly all actions you can do on files.
+
+\(fn ARG)" t nil)
+
+(autoload 'anything-write-file "anything/anything-config" "\
+Preconfigured `anything' providing completion for `write-file'.
+
+\(fn)" t nil)
+
+(autoload 'anything-insert-file "anything/anything-config" "\
+Preconfigured `anything' providing completion for `insert-file'.
+
+\(fn)" t nil)
+
+(autoload 'anything-dired-rename-file "anything/anything-config" "\
+Preconfigured `anything' to rename files from dired.
+
+\(fn)" t nil)
+
+(autoload 'anything-dired-copy-file "anything/anything-config" "\
+Preconfigured `anything' to copy files from dired.
+
+\(fn)" t nil)
+
+(autoload 'anything-dired-symlink-file "anything/anything-config" "\
+Preconfigured `anything' to symlink files from dired.
+
+\(fn)" t nil)
+
+(autoload 'anything-dired-hardlink-file "anything/anything-config" "\
+Preconfigured `anything' to hardlink files from dired.
+
+\(fn)" t nil)
+
+(autoload 'anything-do-grep "anything/anything-config" "\
+Preconfigured anything for grep.
+Contrarily to Emacs `grep' no default directory is given, but
+the full path of candidates in ONLY.
+That allow to grep different files not only in `default-directory' but anywhere
+by marking them (C-<SPACE>). If one or more directory is selected
+grep will search in all files of these directories.
+You can use also wildcard in the base name of candidate.
+If a prefix arg is given use the -r option of grep.
+The prefix arg can be passed before or after start.
+See also `anything-do-grep-1'.
+
+\(fn)" t nil)
+
+(autoload 'anything-do-zgrep "anything/anything-config" "\
+Preconfigured anything for zgrep.
+
+\(fn)" t nil)
+
+(autoload 'anything-do-pdfgrep "anything/anything-config" "\
+Preconfigured anything for pdfgrep.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-etags-select "anything/anything-config" "\
+Preconfigured anything for etags.
+Called with one prefix arg use symbol at point as initial input.
+Called with two prefix arg reinitialize cache.
+If tag file have been modified reinitialize cache.
+
+\(fn ARG)" t nil)
+
+(autoload 'anything-filelist "anything/anything-config" "\
+Preconfigured `anything' to open files instantly.
+
+See `anything-c-filelist-file-name' docstring for usage.
+
+\(fn)" t nil)
+
+(autoload 'anything-filelist+ "anything/anything-config" "\
+Preconfigured `anything' to open files/buffers/bookmarks instantly.
+
+This is a replacement for `anything-for-files'.
+See `anything-c-filelist-file-name' docstring for usage.
+
+\(fn)" t nil)
+
+(autoload 'anything-M-x "anything/anything-config" "\
+Preconfigured `anything' for Emacs commands.
+It is `anything' replacement of regular `M-x' `execute-extended-command'.
+
+\(fn)" t nil)
+
+(autoload 'anything-manage-advice "anything/anything-config" "\
+Preconfigured `anything' to disable/enable function advices.
+
+\(fn)" t nil)
+
+(autoload 'anything-bookmark-ext "anything/anything-config" "\
+Preconfigured `anything' for bookmark-extensions sources.
+Needs bookmark-ext.el:
+<http://mercurial.intuxication.org/hg/emacs-bookmark-extension>.
+Contain also `anything-c-source-google-suggest'.
+
+\(fn)" t nil)
+
+(autoload 'anything-simple-call-tree "anything/anything-config" "\
+Preconfigured `anything' for simple-call-tree. List function relationships.
+
+Needs simple-call-tree.el.
+http://www.emacswiki.org/cgi-bin/wiki/download/simple-call-tree.el
+
+\(fn)" t nil)
+
+(autoload 'anything-mark-ring "anything/anything-config" "\
+Preconfigured `anything' for `anything-c-source-mark-ring'.
+
+\(fn)" t nil)
+
+(autoload 'anything-global-mark-ring "anything/anything-config" "\
+Preconfigured `anything' for `anything-c-source-global-mark-ring'.
+
+\(fn)" t nil)
+
+(autoload 'anything-all-mark-rings "anything/anything-config" "\
+Preconfigured `anything' for `anything-c-source-global-mark-ring' and `anything-c-source-mark-ring'.
+
+\(fn)" t nil)
+
+(autoload 'anything-yaoddmuse-emacswiki-edit-or-view "anything/anything-config" "\
+Preconfigured `anything' to edit or view EmacsWiki page.
+
+Needs yaoddmuse.el.
+
+http://www.emacswiki.org/emacs/download/yaoddmuse.el
+
+\(fn)" t nil)
+
+(autoload 'anything-yaoddmuse-emacswiki-post-library "anything/anything-config" "\
+Preconfigured `anything' to post library to EmacsWiki.
+
+Needs yaoddmuse.el.
+
+http://www.emacswiki.org/emacs/download/yaoddmuse.el
+
+\(fn)" t nil)
+
+(autoload 'anything-eval-expression "anything/anything-config" "\
+Preconfigured anything for `anything-c-source-evaluation-result'.
+
+\(fn ARG)" t nil)
+
+(autoload 'anything-eval-expression-with-eldoc "anything/anything-config" "\
+Preconfigured anything for `anything-c-source-evaluation-result' with `eldoc' support. 
+
+\(fn)" t nil)
+
+(autoload 'anything-calcul-expression "anything/anything-config" "\
+Preconfigured anything for `anything-c-source-calculation-result'.
+
+\(fn)" t nil)
+
+(autoload 'anything-surfraw "anything/anything-config" "\
+Preconfigured `anything' to search PATTERN with search ENGINE.
+
+\(fn PATTERN ENGINE)" t nil)
+
+(autoload 'anything-call-source "anything/anything-config" "\
+Preconfigured `anything' to call anything source.
+
+\(fn)" t nil)
+
+(autoload 'anything-execute-anything-command "anything/anything-config" "\
+Preconfigured `anything' to execute preconfigured `anything'.
+
+\(fn)" t nil)
+
+(autoload 'anything-create "anything/anything-config" "\
+Preconfigured `anything' to do many create actions from STRING.
+See also `anything-create--actions'.
+
+\(fn &optional STRING INITIAL-INPUT)" t nil)
+
+(autoload 'anything-top "anything/anything-config" "\
+Preconfigured `anything' for top command.
+
+\(fn)" t nil)
+
+(autoload 'anything-select-xfont "anything/anything-config" "\
+Preconfigured `anything' to select Xfont.
+
+\(fn)" t nil)
+
+(autoload 'anything-world-time "anything/anything-config" "\
+Preconfigured `anything' to show world time.
+
+\(fn)" t nil)
+
+(autoload 'anything-apt "anything/anything-config" "\
+Preconfigured `anything' : frontend of APT package manager.
+With a prefix arg reload cache.
+
+\(fn ARG)" t nil)
+
+(autoload 'anything-esh-pcomplete "anything/anything-config" "\
+Preconfigured anything to provide anything completion in eshell.
+
+\(fn)" t nil)
+
+(autoload 'anything-eshell-history "anything/anything-config" "\
+Preconfigured anything for eshell history.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-run-external-command "anything/anything-config" "\
+Preconfigured `anything' to run External PROGRAM asyncronously from Emacs.
+If program is already running exit with error.
+You can set your own list of commands with
+`anything-c-external-commands-list'.
+
+\(fn PROGRAM)" t nil)
+
+(autoload 'anything-ratpoison-commands "anything/anything-config" "\
+Preconfigured `anything' to execute ratpoison commands.
+
+\(fn)" t nil)
+
+(autoload 'anything-ucs "anything/anything-config" "\
+Preconfigured anything for `ucs-names' math symbols.
+
+\(fn)" t nil)
+
+(autoload 'anything-c-apropos "anything/anything-config" "\
+Preconfigured anything to describe commands, functions, variables and faces.
+
+\(fn)" t nil)
+
+(autoload 'anything-xrandr-set "anything/anything-config" "\
+
+
+\(fn)" t nil)
+
+(autoload 'anything-ctags-current-file "anything/anything-config" "\
+Preconfigured `anything' to list function/variable definitions.
+
+Needs Exuberant Ctags.
+
+http://ctags.sourceforge.net/
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "anything/anything-match-plugin" "anything/anything-match-plugin.el"
+;;;;;;  (22205 35000 0 0))
+;;; Generated autoloads from anything/anything-match-plugin.el
+
+(autoload 'anything-mp-toggle-match-plugin "anything/anything-match-plugin" "\
+Turn on/off multiple regexp matching in anything.
+i.e anything-match-plugin.
+
+\(fn)" t nil)
+
+;;;***
+
 ;;;### (autoloads (vassoc set-modified-alist modify-alist remove-alist
 ;;;;;;  set-alist del-alist put-alist) "apel/site-lisp/apel/alist"
 ;;;;;;  "apel/site-lisp/apel/alist.el" (21930 33088 0 0))
@@ -211,6 +1233,296 @@ See `auto-highlight-symbol-mode' for more information on Auto-Highlight-Symbol m
 Toggle Auto Highlight Symbol Mode
 
 \(fn &optional ARG)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-irony/company-irony" "company-irony/company-irony.el"
+;;;;;;  (22201 43573 0 0))
+;;; Generated autoloads from company-irony/company-irony.el
+
+(autoload 'company-irony "company-irony/company-irony" "\
+
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+(autoload 'company-irony-setup-begin-commands "company-irony/company-irony" "\
+Include irony trigger commands to `company-begin-commands'.
+
+This allow completion to be automatically triggered after member
+accesses (obj.|, obj->|, ...).
+
+This may be useful to company < `0.8.4', newer version of company
+include these commands by default.
+
+\(fn)" nil nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company" "company-mode/company.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company.el
+
+(autoload 'company-mode "company-mode/company" "\
+\"complete anything\"; is an in-buffer completion framework.
+Completion starts automatically, depending on the values
+`company-idle-delay' and `company-minimum-prefix-length'.
+
+Completion can be controlled with the commands:
+`company-complete-common', `company-complete-selection', `company-complete',
+`company-select-next', `company-select-previous'.  If these commands are
+called before `company-idle-delay', completion will also start.
+
+Completions can be searched with `company-search-candidates' or
+`company-filter-candidates'.  These can be used while completion is
+inactive, as well.
+
+The completion data is retrieved using `company-backends' and displayed
+using `company-frontends'.  If you want to start a specific backend, call
+it interactively or use `company-begin-backend'.
+
+By default, the completions list is sorted alphabetically, unless the
+backend chooses otherwise, or `company-transformers' changes it later.
+
+regular keymap (`company-mode-map'):
+
+\\{company-mode-map}
+keymap during active completions (`company-active-map'):
+
+\\{company-active-map}
+
+\(fn &optional ARG)" t nil)
+
+(defvar global-company-mode nil "\
+Non-nil if Global-Company mode is enabled.
+See the command `global-company-mode' for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `global-company-mode'.")
+
+(custom-autoload 'global-company-mode "company-mode/company" nil)
+
+(autoload 'global-company-mode "company-mode/company" "\
+Toggle Company mode in all buffers.
+With prefix ARG, enable Global-Company mode if ARG is positive;
+otherwise, disable it.  If called from Lisp, enable the mode if
+ARG is omitted or nil.
+
+Company mode is enabled in all buffers where
+`company-mode-on' would do it.
+See `company-mode' for more information on Company mode.
+
+\(fn &optional ARG)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-abbrev" "company-mode/company-abbrev.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-abbrev.el
+
+(autoload 'company-abbrev "company-mode/company-abbrev" "\
+`company-mode' completion backend for abbrev.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-bbdb" "company-mode/company-bbdb.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-bbdb.el
+
+(autoload 'company-bbdb "company-mode/company-bbdb" "\
+`company-mode' completion backend for BBDB.
+
+\(fn COMMAND &optional ARG &rest IGNORE)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-css" "company-mode/company-css.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-css.el
+
+(autoload 'company-css "company-mode/company-css" "\
+`company-mode' completion backend for `css-mode'.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-dabbrev" "company-mode/company-dabbrev.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-dabbrev.el
+
+(autoload 'company-dabbrev "company-mode/company-dabbrev" "\
+dabbrev-like `company-mode' completion backend.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-dabbrev-code" "company-mode/company-dabbrev-code.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-dabbrev-code.el
+
+(autoload 'company-dabbrev-code "company-mode/company-dabbrev-code" "\
+dabbrev-like `company-mode' backend for code.
+The backend looks for all symbols in the current buffer that aren't in
+comments or strings.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-elisp" "company-mode/company-elisp.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-elisp.el
+
+(autoload 'company-elisp "company-mode/company-elisp" "\
+`company-mode' completion backend for Emacs Lisp.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-etags" "company-mode/company-etags.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-etags.el
+
+(autoload 'company-etags "company-mode/company-etags" "\
+`company-mode' completion backend for etags.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-files" "company-mode/company-files.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-files.el
+
+(autoload 'company-files "company-mode/company-files" "\
+`company-mode' completion backend existing file names.
+Completions works for proper absolute and relative files paths.
+File paths with spaces are only supported inside strings.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-gtags" "company-mode/company-gtags.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-gtags.el
+
+(autoload 'company-gtags "company-mode/company-gtags" "\
+`company-mode' completion backend for GNU Global.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-ispell" "company-mode/company-ispell.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-ispell.el
+
+(autoload 'company-ispell "company-mode/company-ispell" "\
+`company-mode' completion backend using Ispell.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-keywords" "company-mode/company-keywords.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-keywords.el
+
+(autoload 'company-keywords "company-mode/company-keywords" "\
+`company-mode' backend for programming language keywords.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-nxml" "company-mode/company-nxml.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-nxml.el
+
+(autoload 'company-nxml "company-mode/company-nxml" "\
+`company-mode' completion backend for `nxml-mode'.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-oddmuse" "company-mode/company-oddmuse.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-oddmuse.el
+
+(autoload 'company-oddmuse "company-mode/company-oddmuse" "\
+`company-mode' completion backend for `oddmuse-mode'.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-semantic" "company-mode/company-semantic.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-semantic.el
+
+(autoload 'company-semantic "company-mode/company-semantic" "\
+`company-mode' completion backend using CEDET Semantic.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-tempo" "company-mode/company-tempo.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-tempo.el
+
+(autoload 'company-tempo "company-mode/company-tempo" "\
+`company-mode' completion backend for tempo.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-xcode" "company-mode/company-xcode.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-xcode.el
+
+(autoload 'company-xcode "company-mode/company-xcode" "\
+`company-mode' completion backend for Xcode projects.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "company-mode/company-yasnippet" "company-mode/company-yasnippet.el"
+;;;;;;  (22201 43554 0 0))
+;;; Generated autoloads from company-mode/company-yasnippet.el
+
+(autoload 'company-yasnippet "company-mode/company-yasnippet" "\
+`company-mode' backend for `yasnippet'.
+
+This backend should be used with care, because as long as there are
+snippets defined for the current major mode, this backend will always
+shadow backends that come after it.  Recommended usages:
+
+* In a buffer-local value of `company-backends', grouped with a backend or
+  several that provide actual text completions.
+
+  (add-hook 'js-mode-hook
+            (lambda ()
+              (set (make-local-variable 'company-backends)
+                   '((company-dabbrev-code company-yasnippet)))))
+
+* After keyword `:with', grouped with other backends.
+
+  (push '(company-semantic :with company-yasnippet) company-backends)
+
+* Not in `company-backends', just bound to a key.
+
+  (global-set-key (kbd \"C-c y\") 'company-yasnippet)
+
+\(fn COMMAND &optional ARG &rest IGNORE)" t nil)
 
 ;;;***
 
@@ -902,6 +2214,123 @@ See `indent-guide-mode' for more information on Indent-Guide mode.
 
 ;;;***
 
+;;;### (autoloads nil "irony-mode/irony" "irony-mode/irony.el" (22201
+;;;;;;  43562 0 0))
+;;; Generated autoloads from irony-mode/irony.el
+
+(defvar irony-additional-clang-options nil "\
+Additional command line options to pass down to libclang.
+
+Please, do NOT use this variable to add header search paths, only
+additional warnings or compiler options.
+
+These compiler options will be prepended to the command line, in
+order to not override the value coming from a compilation
+database.")
+
+(custom-autoload 'irony-additional-clang-options "irony-mode/irony" t)
+
+(autoload 'irony-mode "irony-mode/irony" "\
+Minor mode for C, C++ and Objective-C, powered by libclang.
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'irony-version "irony-mode/irony" "\
+Return the version number of the file irony.el.
+
+If called interactively display the version in the echo area.
+
+\(fn &optional SHOW-VERSION)" t nil)
+
+(autoload 'irony-server-kill "irony-mode/irony" "\
+Kill the running irony-server process, if any.
+
+\(fn)" t nil)
+
+(autoload 'irony-get-type "irony-mode/irony" "\
+Get the type of symbol under cursor.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "irony-mode/irony-cdb" "irony-mode/irony-cdb.el"
+;;;;;;  (22201 43562 0 0))
+;;; Generated autoloads from irony-mode/irony-cdb.el
+
+(autoload 'irony-cdb-autosetup-compile-options "irony-mode/irony-cdb" "\
+
+
+\(fn)" t nil)
+
+(autoload 'irony-cdb-menu "irony-mode/irony-cdb" "\
+
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "irony-mode/irony-cdb-clang-complete" "irony-mode/irony-cdb-clang-complete.el"
+;;;;;;  (22201 43562 0 0))
+;;; Generated autoloads from irony-mode/irony-cdb-clang-complete.el
+
+(autoload 'irony-cdb-clang-complete "irony-mode/irony-cdb-clang-complete" "\
+
+
+\(fn COMMAND &rest ARGS)" nil nil)
+
+;;;***
+
+;;;### (autoloads nil "irony-mode/irony-cdb-json" "irony-mode/irony-cdb-json.el"
+;;;;;;  (22201 43562 0 0))
+;;; Generated autoloads from irony-mode/irony-cdb-json.el
+
+(autoload 'irony-cdb-json "irony-mode/irony-cdb-json" "\
+
+
+\(fn COMMAND &rest ARGS)" nil nil)
+
+(autoload 'irony-cdb-json-add-compile-commands-path "irony-mode/irony-cdb-json" "\
+Add an out-of-source compilation database.
+
+Files below the PROJECT-ROOT directory will use the JSON
+Compilation Database as specified by COMPILE-COMMANDS-PATH.
+
+The JSON Compilation Database are often generated in the build
+directory. This functions helps mapping out-of-source build
+directories to project directory.
+
+\(fn PROJECT-ROOT COMPILE-COMMANDS-PATH)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "irony-mode/irony-cdb-libclang" "irony-mode/irony-cdb-libclang.el"
+;;;;;;  (22201 43562 0 0))
+;;; Generated autoloads from irony-mode/irony-cdb-libclang.el
+
+(autoload 'irony-cdb-libclang "irony-mode/irony-cdb-libclang" "\
+
+
+\(fn COMMAND &rest ARGS)" nil nil)
+
+;;;***
+
+;;;### (autoloads nil "irony-mode/irony-completion" "irony-mode/irony-completion.el"
+;;;;;;  (22201 43562 0 0))
+;;; Generated autoloads from irony-mode/irony-completion.el
+
+(autoload 'irony-completion-at-point "irony-mode/irony-completion" "\
+
+
+\(fn)" nil nil)
+
+(autoload 'irony-completion-at-point-async "irony-mode/irony-completion" "\
+
+
+\(fn)" t nil)
+
+;;;***
+
 ;;;### (autoloads (js2-imenu-extras-mode js2-imenu-extras-setup)
 ;;;;;;  "js2-mode/js2-imenu-extras" "js2-mode/js2-imenu-extras.el"
 ;;;;;;  (21876 28835 0 0))
@@ -980,6 +2409,28 @@ displayed in the example above.
 \(fn ALIST &rest BODY)" nil t)
 
 (put 'let-alist 'lisp-indent-function '1)
+
+;;;***
+
+;;;### (autoloads nil "markdown-mode/markdown-mode" "markdown-mode/markdown-mode.el"
+;;;;;;  (22192 33481 0 0))
+;;; Generated autoloads from markdown-mode/markdown-mode.el
+
+(autoload 'markdown-mode "markdown-mode/markdown-mode" "\
+Major mode for editing Markdown files.
+
+\(fn)" t nil)
+
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+
+(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+(autoload 'gfm-mode "markdown-mode/markdown-mode" "\
+Major mode for editing GitHub Flavored Markdown files.
+
+\(fn)" t nil)
 
 ;;;***
 
@@ -1259,6 +2710,30 @@ the kill compile command of the mode.
 Bound on \\[mode-compile-kill].
 
 \(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "php-mode/php-mode" "php-mode/php-mode.el"
+;;;;;;  (22205 34571 0 0))
+;;; Generated autoloads from php-mode/php-mode.el
+
+(let ((loads (get 'php 'custom-loads))) (if (member '"php-mode/php-mode" loads) nil (put 'php 'custom-loads (cons '"php-mode/php-mode" loads))))
+
+(defvar php-extra-constants 'nil "\
+A list of additional strings to treat as PHP constants.")
+
+(custom-autoload 'php-extra-constants "php-mode/php-mode" nil)
+
+(add-to-list 'interpreter-mode-alist (cons "php" 'php-mode))
+
+(autoload 'php-mode "php-mode/php-mode" "\
+Major mode for editing PHP code.
+
+\\{php-mode-map}
+
+\(fn)" t nil)
+
+(dolist (pattern '("\\.php[s345t]?\\'" "\\.phtml\\'" "Amkfile" "\\.amk$")) (add-to-list 'auto-mode-alist `(,pattern . php-mode) t))
 
 ;;;***
 
@@ -1838,32 +3313,41 @@ See `yas-minor-mode' for more information on Yas minor mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("apel/site-lisp/apel/calist.el" "apel/site-lisp/apel/filename.el"
-;;;;;;  "apel/site-lisp/apel/install.el" "apel/site-lisp/emu/apel-ver.el"
-;;;;;;  "apel/site-lisp/emu/broken.el" "apel/site-lisp/emu/emu.el"
-;;;;;;  "apel/site-lisp/emu/inv-23.el" "apel/site-lisp/emu/invisible.el"
-;;;;;;  "apel/site-lisp/emu/mcharset.el" "apel/site-lisp/emu/mcs-20.el"
-;;;;;;  "apel/site-lisp/emu/mcs-e20.el" "apel/site-lisp/emu/mule-caesar.el"
-;;;;;;  "apel/site-lisp/emu/pccl-20.el" "apel/site-lisp/emu/pccl.el"
-;;;;;;  "apel/site-lisp/emu/pces-20.el" "apel/site-lisp/emu/pces-e20.el"
-;;;;;;  "apel/site-lisp/emu/pces.el" "apel/site-lisp/emu/pcustom.el"
-;;;;;;  "apel/site-lisp/emu/poe.el" "apel/site-lisp/emu/poem-e20.el"
-;;;;;;  "apel/site-lisp/emu/poem-e20_3.el" "apel/site-lisp/emu/poem.el"
-;;;;;;  "apel/site-lisp/emu/product.el" "apel/site-lisp/emu/pym.el"
-;;;;;;  "apel/site-lisp/emu/static.el" "auto-complete-c-headers/auto-complete-c-headers.el"
-;;;;;;  "auto-complete/auto-complete-pkg.el" "auto-highlight-symbol/auto-highlight-symbol-config.el"
-;;;;;;  "dash/dash-functional.el" "dash/dash.el" "el-get/el-get-autoloading.el"
-;;;;;;  "el-get/el-get-build.el" "el-get/el-get-byte-compile.el"
-;;;;;;  "el-get/el-get-core.el" "el-get/el-get-custom.el" "el-get/el-get-dependencies.el"
-;;;;;;  "el-get/el-get-install.el" "el-get/el-get-methods.el" "el-get/el-get-notify.el"
-;;;;;;  "el-get/el-get-recipes.el" "el-get/el-get-status.el" "epl/epl.el"
-;;;;;;  "flymake-easy/flymake-easy.el" "fuzzy/fuzzy.el" "minimap/minimap-autoloads.el"
-;;;;;;  "minimap/minimap-pkg.el" "perl-completion/perl-completion.el"
+;;;### (autoloads nil nil ("anything/90anything-complete.el" "anything/contrib/anything-grep.el"
+;;;;;;  "anything/contrib/anything-ipa.el" "anything/contrib/anything-menu.el"
+;;;;;;  "anything/contrib/anything-migemo.el" "anything/contrib/anything-multi-sources.el"
+;;;;;;  "anything/contrib/anything-startup.el" "anything/extensions/anything-complete.el"
+;;;;;;  "anything/extensions/anything-gtags.el" "anything/extensions/anything-obsolete.el"
+;;;;;;  "anything/extensions/anything-show-completion.el" "apel/site-lisp/apel/calist.el"
+;;;;;;  "apel/site-lisp/apel/filename.el" "apel/site-lisp/apel/install.el"
+;;;;;;  "apel/site-lisp/emu/apel-ver.el" "apel/site-lisp/emu/broken.el"
+;;;;;;  "apel/site-lisp/emu/emu.el" "apel/site-lisp/emu/inv-23.el"
+;;;;;;  "apel/site-lisp/emu/invisible.el" "apel/site-lisp/emu/mcharset.el"
+;;;;;;  "apel/site-lisp/emu/mcs-20.el" "apel/site-lisp/emu/mcs-e20.el"
+;;;;;;  "apel/site-lisp/emu/mule-caesar.el" "apel/site-lisp/emu/pccl-20.el"
+;;;;;;  "apel/site-lisp/emu/pccl.el" "apel/site-lisp/emu/pces-20.el"
+;;;;;;  "apel/site-lisp/emu/pces-e20.el" "apel/site-lisp/emu/pces.el"
+;;;;;;  "apel/site-lisp/emu/pcustom.el" "apel/site-lisp/emu/poe.el"
+;;;;;;  "apel/site-lisp/emu/poem-e20.el" "apel/site-lisp/emu/poem-e20_3.el"
+;;;;;;  "apel/site-lisp/emu/poem.el" "apel/site-lisp/emu/product.el"
+;;;;;;  "apel/site-lisp/emu/pym.el" "apel/site-lisp/emu/static.el"
+;;;;;;  "auto-complete-c-headers/auto-complete-c-headers.el" "auto-complete/auto-complete-pkg.el"
+;;;;;;  "auto-highlight-symbol/auto-highlight-symbol-config.el" "company-mode/company-capf.el"
+;;;;;;  "company-mode/company-clang.el" "company-mode/company-cmake.el"
+;;;;;;  "company-mode/company-eclim.el" "company-mode/company-template.el"
+;;;;;;  "company-mode/company-tests.el" "dash/dash-functional.el"
+;;;;;;  "dash/dash.el" "el-get/el-get-autoloading.el" "el-get/el-get-build.el"
+;;;;;;  "el-get/el-get-byte-compile.el" "el-get/el-get-core.el" "el-get/el-get-custom.el"
+;;;;;;  "el-get/el-get-dependencies.el" "el-get/el-get-install.el"
+;;;;;;  "el-get/el-get-methods.el" "el-get/el-get-notify.el" "el-get/el-get-recipes.el"
+;;;;;;  "el-get/el-get-status.el" "epl/epl.el" "flymake-easy/flymake-easy.el"
+;;;;;;  "fuzzy/fuzzy.el" "irony-mode/irony-diagnostics.el" "irony-mode/irony-snippet.el"
+;;;;;;  "minimap/minimap-autoloads.el" "minimap/minimap-pkg.el" "perl-completion/perl-completion.el"
+;;;;;;  "php-completion/php-completion.el" "php-mode/php-mode-test.el"
 ;;;;;;  "popup/popup.el" "powerline/powerline-separators.el" "tabbar/aquamacs-compat.el"
 ;;;;;;  "tabbar/aquamacs-tabbar.el" "tabbar/aquamacs-tools.el" "tabbar/one-buffer-one-frame.el"
-;;;;;;  "tabbar/tabbar-window.el" "yasnippet-config/yasnippet-config.el"
-;;;;;;  "yasnippet/yasnippet-debug.el" "yasnippet/yasnippet-tests.el")
-;;;;;;  (22187 24943 917867 0))
+;;;;;;  "tabbar/tabbar-window.el" "yasnippet/yasnippet-debug.el"
+;;;;;;  "yasnippet/yasnippet-tests.el") (22205 35045 627322 0))
 
 ;;;***
 
