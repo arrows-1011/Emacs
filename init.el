@@ -180,7 +180,7 @@
          (local-file  (file-relative-name
                        temp-file
                        (file-name-directory buffer-file-name))))
-    (list "g++" (list "-std=c++11" "-Wall" "-Wextra" "-fsyntax-only" local-file))))
+    (list "g++-5" (list "-std=c++11" "-Wall" "-Wextra" "-fsyntax-only" local-file))))
 
 (push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
 
@@ -199,7 +199,7 @@
          (local-file  (file-relative-name
                        temp-file
                        (file-name-directory buffer-file-name))))
-    (list "g++" (list "-Wall" "-Wextra" "-fsyntax-only" local-file))))
+    (list "g++-5" (list "-Wall" "-Wextra" "-fsyntax-only" local-file))))
 
 (push '("\\.cc$" flymake-cc2-init) flymake-allowed-file-name-masks)
 
@@ -745,16 +745,3 @@ static char * arrow_right[] = {
 (add-to-list 'auto-mode-alist '("\\.txt\\'" . markdown-mode))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;(setenv "LD_LIBRARY_PATH" "Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib")
-;; irony mode
-;(require 'irony)
-;(require 'ac-irony)
-
-;(defun my:irony-enable()
-;  (when (member major-mode irony-known-modes)
-;    (irony-mode 1)))
-
-;(add-hook 'c-mode-hook 'my:irony-enable)
-;(add-hook 'c++-mode-hook 'my:irony-enable)
