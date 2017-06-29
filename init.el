@@ -2,6 +2,13 @@
 ;;  Basic Setting
 
 ;; Hide start-up message
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (setq inhibit-startup-message t)
 
 ;; "yes or no" -> "y or n"
@@ -59,7 +66,7 @@
 
 ;; Setting of background
 (if window-system (progn
-		    (setq initial-frame-alist '((width . 155)(height . 57)(top . 0)(left . 58)))
+		    (setq initial-frame-alist '((width . 100)(height . 57)(top . 0)(left . 58)))
 		    (set-background-color "Black")
 		    (set-foreground-color "White")
 		    (set-cursor-color "Gray")
@@ -74,11 +81,11 @@
 
 
 ;; load-path
-(setq load-path (append
-		 (list
-		  (expand-file-name "~/.emacs.d/elisp/el-get/tern/emacs")
-		  )
-		 load-path))
+;(setq load-path (append
+;		 (list
+;		  (expand-file-name "~/.emacs.d/elisp/el-get/tern/emacs")
+;		  )
+;		 load-path))
 
 
 ;; Character code
@@ -105,6 +112,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; C, C++ basic setting
+
+;; Header file
+(add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
 
 ;; C, C++ no tab
 (defun my-c-c++-mode-init ()
@@ -162,7 +172,7 @@
          (local-file  (file-relative-name
                        temp-file
                        (file-name-directory buffer-file-name))))
-    (list "gcc" (list "-Wall" "-Wextra" "-fsyntax-only" local-file))))
+    (list "gcc" (list "-Wall" "-std=c99" "-Wextra" "-fsyntax-only" local-file))))
 
 (push '("\\.c$" flymake-cc-init) flymake-allowed-file-name-masks)
 
@@ -173,14 +183,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; C++(.cpp) for C++11
+;; C++
 (defun flymake-cc-init ()
   (let* ((temp-file   (flymake-init-create-temp-buffer-copy
                        'flymake-create-temp-inplace))
          (local-file  (file-relative-name
                        temp-file
                        (file-name-directory buffer-file-name))))
-    (list "g++-5" (list "-std=c++11" "-Wall" "-Wextra" "-fsyntax-only" local-file))))
+    (list "g++-7" (list "-std=c++14" "-Wall" "-Wextra" "-fsyntax-only" local-file))))
 
 (push '("\\.cpp$" flymake-cc-init) flymake-allowed-file-name-masks)
 
@@ -191,15 +201,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; C++(.cc)
-
+;; C++ (.cc)
 (defun flymake-cc2-init ()
   (let* ((temp-file   (flymake-init-create-temp-buffer-copy
                        'flymake-create-temp-inplace))
          (local-file  (file-relative-name
                        temp-file
                        (file-name-directory buffer-file-name))))
-    (list "g++-5" (list "-Wall" "-Wextra" "-fsyntax-only" local-file))))
+    (list "g++-7" (list "-std=c++14" "-Wall" "-Wextra" "-fsyntax-only" local-file))))
 
 (push '("\\.cc$" flymake-cc2-init) flymake-allowed-file-name-masks)
 
@@ -264,34 +273,22 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; auto_complete
 
-(defun my:ac-init ()
-  (require 'auto-complete)
-  (require 'auto-complete-config)
-  (ac-config-default)
-  (add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict/")
-  (add-to-list 'ac-dictionary-directories "~/.emacs.d//my_ac-dict/")
-  (ac-set-trigger-key "TAB")
-  (setq ac-use-menu-map t)
-  )
+;(defun my:ac-init ()
+;  (require 'auto-complete)
+;  (require 'auto-complete-config)
+;  (ac-config-default)
+;  (add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict/")
+;  (add-to-list 'ac-dictionary-directories "~/.emacs.d//my_ac-dict/")
+;  (ac-set-trigger-key "TAB")
+;  (setq ac-use-menu-map t)
+;  )
 
-(add-hook 'c++-mode-hook 'my:ac-init)
-(add-hook 'c-mode-hook 'my:ac-init)
-(add-hook 'latex-mode-hook 'my:ac-init)
-(add-hook 'html-mode 'my:ac-init)
-(add-hook 'web-mode 'my:ac-init)
+;(add-hook 'c++-mode-hook 'my:ac-init)
+;(add-hook 'c-mode-hook 'my:ac-init)
+;(add-hook 'latex-mode-hook 'my:ac-init)
+;(add-hook 'html-mode 'my:ac-init)
+;(add-hook 'web-mode 'my:ac-init)
 (setq ac-use-fuzzy t)
-
-;; c-header
-(defun my:ac-c-headers-init ()
-  (require 'auto-complete-c-headers)
-  (add-to-list 'ac-sources 'ac-source-c-headers)
-  (add-to-list 'achead:include-directories '"/usr/local/Cellar/gcc47/4.7.4/lib/gcc/x86_64-apple-darwin12.6.0/4.7.4/include")
-  (add-to-list 'achead:include-directories '"/usr/local/Cellar/gcc47/4.7.4/lib/gcc/x86_64-apple-darwin12.6.0/4.7.4/include/c++")
-  (add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1")
-  )
-
-(add-hook 'c++-mode-hook 'my:ac-c-headers-init)
-(add-hook 'c-mode-hook 'my:ac-c-headers-init)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -329,91 +326,91 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; tabbar
-(require 'tabbar)
-(tabbar-mode 1)
-
-(setq tabbar-ruler-swap-faces t)
-(require 'tabbar-ruler)
-
-(global-set-key "\M-]" 'tabbar-forward)  ; next tab
-(global-set-key "\M-[" 'tabbar-backward) ; previous tab
-
+;(require 'tabbar)
+;(tabbar-mode 1)
+;
+;(setq tabbar-ruler-swap-faces t)
+;(require 'tabbar-ruler)
+;
+;(global-set-key "\M-]" 'tabbar-forward)  ; next tab
+;(global-set-key "\M-[" 'tabbar-backward) ; previous tab
+;
 ;; Erase the left side button
-(dolist (btn '(tabbar-buffer-home-button
-	       tabbar-scroll-left-button
-	       tabbar-scroll-right-button))
-  (set btn (cons (cons "" nil)
-		 (cons "" nil))))
+;(dolist (btn '(tabbar-buffer-home-button
+;	       tabbar-scroll-left-button
+;	       tabbar-scroll-right-button))
+;  (set btn (cons (cons "" nil)
+;		 (cons "" nil))))
 
 
 ;; Length of tab separator
-(setq tabbar-separator '(1.5)) 
+;(setq tabbar-separator '(1.5)) 
 
 ;; List of display
-(defun my-tabbar-buffer-list ()
-  (delq nil
-	(mapcar #'(lambda (b)
-		    (cond
-	     ;; Always include the current buffer.
-	     ((eq (current-buffer) b) b)
-		     ((buffer-file-name b) b)
-		     ((char-equal ?\  (aref (buffer-name b) 0)) nil)
-		     ((char-equal ?* (aref (buffer-name b) 0)) nil) 
-		     ((buffer-live-p b) b)))
-		(buffer-list))))
-(setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
+;(defun my-tabbar-buffer-list ()
+;  (delq nil
+;	(mapcar #'(lambda (b)
+;		    (cond
+;	     ;; Always include the current buffer.
+;	     ((eq (current-buffer) b) b)
+;		     ((buffer-file-name b) b)
+;		     ((char-equal ?\  (aref (buffer-name b) 0)) nil)
+;		     ((char-equal ?* (aref (buffer-name b) 0)) nil) 
+;		     ((buffer-live-p b) b)))
+;		(buffer-list))))
+;(setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; web-mode
-(require 'web-mode)
+;(require 'web-mode)
 ;; setting of extention
-(add-to-list 'auto-mode-alist '("\\.html?$"     . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsp?$"      . web-mode))
+;(add-to-list 'auto-mode-alist '("\\.html?$"     . web-mode))
+;(add-to-list 'auto-mode-alist '("\\.jsp?$"      . web-mode))
 
 ;; indent
-(defun my_web-mode-hook ()
-  "Hooks for Web mode."
-  (setq web-mode-markup-indent-offset 4)
-  (setq web-mode-css-indent-offset 4)
-  (setq web-mode-script-padding 4)
-  (setq web-mode-style-padding 4)
-  (setq web-mode-code-indent-offset 4)
-  (setq web-mode-block-padding 4)
-  (setq indent-tabs-mode t)
-  )
-
-(add-hook 'web-mode-hook 'my_web-mode-hook)
+;(defun my_web-mode-hook ()
+;  "Hooks for Web mode."
+;  (setq web-mode-markup-indent-offset 4)
+;  (setq web-mode-css-indent-offset 4)
+;  (setq web-mode-script-padding 4)
+;  (setq web-mode-style-padding 4)
+;  (setq web-mode-code-indent-offset 4)
+;  (setq web-mode-block-padding 4)
+;  (setq indent-tabs-mode t)
+;  )
+;
+;(add-hook 'web-mode-hook 'my_web-mode-hook)
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; javascript
-(require 'js2-mode)
-(autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+;(require 'js2-mode)
+;(autoload 'js2-mode "js2-mode" nil t)
+;(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+;
+;(require 'tern)
+;
+;(add-hook 'js2-mode-hook
+;          '(lambda ()
+;             (setq js2-basic-offset 4)
+;	     (set (make-local-variable 'js2-indent-switch-body) t)
+;	     (tern-mode t)
+;	     ))
 
-(require 'tern)
+;(eval-after-load 'tern
+;  '(progn
+;     (require 'tern-auto-complete)
+;     (tern-ac-setup))
+;  )
 
-(add-hook 'js2-mode-hook
-          '(lambda ()
-             (setq js2-basic-offset 4)
-	     (set (make-local-variable 'js2-indent-switch-body) t)
-	     (tern-mode t)
-	     ))
-
-(eval-after-load 'tern
-  '(progn
-     (require 'tern-auto-complete)
-     (tern-ac-setup))
-  )
-
-(defun delete-tern-process ()
-  (interactive)
-  (delete-process "Tern"))
+;(defun delete-tern-process ()
+;  (interactive)
+;  (delete-process "Tern"))
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -421,78 +418,78 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; perl mode
-(defalias 'perl-mode 'cperl-mode)
-(setq auto-mode-alist (append '(("\\.psgi$" . cperl-mode)) auto-mode-alist))
-(setq auto-mode-alist (append '(("\\.cgi$" . cperl-mode)) auto-mode-alist))
-(setq auto-mode-alist (append '(("\\.pl$" . cperl-mode)) auto-mode-alist))
-(setq auto-mode-alist (append '(("\\.pm$" . cperl-mode)) auto-mode-alist))
-(setq auto-mode-alist (append '(("\\.t$" . cperl-mode)) auto-mode-alist))
-
-(add-hook 'cperl-mode-hook
-          '(lambda ()
-	     
+;(defalias 'perl-mode 'cperl-mode)
+;(setq auto-mode-alist (append '(("\\.psgi$" . cperl-mode)) auto-mode-alist))
+;(setq auto-mode-alist (append '(("\\.cgi$" . cperl-mode)) auto-mode-alist))
+;(setq auto-mode-alist (append '(("\\.pl$" . cperl-mode)) auto-mode-alist))
+;(setq auto-mode-alist (append '(("\\.pm$" . cperl-mode)) auto-mode-alist))
+;(setq auto-mode-alist (append '(("\\.t$" . cperl-mode)) auto-mode-alist))
+;
+;(add-hook 'cperl-mode-hook
+;          '(lambda ()
+;	     
 	     ;; Setting for indent
-             (cperl-set-style "PerlStyle")
-             (custom-set-variables
-              '(cperl-indent-parens-as-block t)
-              '(cperl-close-paren-offset -4)
-              '(cperl-indent-subs-specially nil))
+;             (cperl-set-style "PerlStyle")
+;             (custom-set-variables
+;              '(cperl-indent-parens-as-block t)
+;              '(cperl-close-paren-offset -4)
+;              '(cperl-indent-subs-specially nil))
 	     
              ;; Display documents
-             (define-key global-map (kbd "M-p") 'cperl-perldoc)
-             ))
+;             (define-key global-map (kbd "M-p") 'cperl-perldoc)
+;             ))
 
 ;; Look at source
-(put 'perl-module-thing 'end-op
-     (lambda ()
-       (re-search-forward "\\=[a-zA-Z][a-zA-Z0-9_:]*" nil t)))
-(put 'perl-module-thing 'beginning-op
-     (lambda ()
-       (if (re-search-backward "[^a-zA-Z0-9_:]" nil t)
-           (forward-char)
-         (goto-char (point-min)))))
-(defun perldoc-m ()
-  (interactive)
-  (let ((module (thing-at-point 'perl-module-thing))
-        (pop-up-windows t)
-        (cperl-mode-hook nil))
-    (when (string= module "")
-      (setq module (read-string "Module Name: ")))
-    (let ((result (substring (shell-command-to-string (concat "perldoc -m " module)) 0 -1))
-          (buffer (get-buffer-create (concat "*Perl " module "*")))
-          (pop-or-set-flag (string-match "*Perl " (buffer-name))))
-      (if (string-match "No module found for" result)
-          (message "%s" result)
-        (progn
-          (with-current-buffer buffer
-            (toggle-read-only -1)
-            (erase-buffer)
-            (insert result)
-            (goto-char (point-min))
-            (cperl-mode)
-            (toggle-read-only 1)
-            )
-          (if pop-or-set-flag
-              (switch-to-buffer buffer)
-            (display-buffer buffer)))))))
-
-(global-set-key (kbd "M-m") 'perldoc-m)
+;(put 'perl-module-thing 'end-op
+;     (lambda ()
+;       (re-search-forward "\\=[a-zA-Z][a-zA-Z0-9_:]*" nil t)))
+;(put 'perl-module-thing 'beginning-op
+;     (lambda ()
+;       (if (re-search-backward "[^a-zA-Z0-9_:]" nil t)
+;           (forward-char)
+;         (goto-char (point-min)))))
+;(defun perldoc-m ()
+;  (interactive)
+;  (let ((module (thing-at-point 'perl-module-thing))
+;        (pop-up-windows t)
+;        (cperl-mode-hook nil))
+;    (when (string= module "")
+;      (setq module (read-string "Module Name: ")))
+;    (let ((result (substring (shell-command-to-string (concat "perldoc -m " module)) 0 -1))
+;          (buffer (get-buffer-create (concat "*Perl " module "*")))
+;          (pop-or-set-flag (string-match "*Perl " (buffer-name))))
+;      (if (string-match "No module found for" result)
+;          (message "%s" result)
+;        (progn
+;          (with-current-buffer buffer
+;            (toggle-read-only -1)
+;            (erase-buffer)
+;            (insert result)
+;            (goto-char (point-min))
+;            (cperl-mode)
+;            (toggle-read-only 1)
+;            )
+;          (if pop-or-set-flag
+;              (switch-to-buffer buffer)
+;            (display-buffer buffer)))))))
+;
+;(global-set-key (kbd "M-m") 'perldoc-m)
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PHP
-(require 'php-mode)
-(add-hook 'php-mode-hook
-         (lambda ()
-             (require 'php-completion)
-             (php-completion-mode t)
-             (define-key php-mode-map (kbd "C-o") 'phpcmp-complete)
-             (when (require 'auto-complete nil t)
-             (make-variable-buffer-local 'ac-sources)
-             (add-to-list 'ac-sources 'ac-source-php-completion)
-             (auto-complete-mode t))))
+;(require 'php-mode)
+;(add-hook 'php-mode-hook
+;         (lambda ()
+;             (require 'php-completion)
+;             (php-completion-mode t)
+;             (define-key php-mode-map (kbd "C-o") 'phpcmp-complete)
+;             (when (require 'auto-complete nil t)
+;             (make-variable-buffer-local 'ac-sources)
+;             (add-to-list 'ac-sources 'ac-source-php-completion)
+;             (auto-complete-mode t))))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -524,28 +521,28 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; minimap
-(require 'minimap)
-
-(defvar minimap-window nil)
-(defun minimap-toggle ()
-  (interactive)
-  (if (and minimap-window
-           (window-live-p minimap-window))
-      (minimap-kill)
-    (minimap-create)))
-
-(global-set-key (kbd "C-c m") 'minimap-create)
-(global-set-key (kbd "C-c d") 'minimap-kill)
+;(require 'minimap)
+;
+;(defvar minimap-window nil)
+;(defun minimap-toggle ()
+;  (interactive)
+;  (if (and minimap-window
+;           (window-live-p minimap-window))
+;      (minimap-kill)
+;    (minimap-create)))
+;
+;(global-set-key (kbd "C-c m") 'minimap-create)
+;(global-set-key (kbd "C-c d") 'minimap-kill)
 
 ;; Display right side
-(setq minimap-window-location 'right)
+;(setq minimap-window-location 'right)
 
 ;; set color
-(custom-set-faces
- '(minimap-active-region-background ((t (:background "#494949"))) t)
- '(preview-reference-face ((t (:foreground "#00CCCC" :background "#CCCCCC"))) t)
- '(sr-active-path-face ((t (:foreground "#00CCCC" :weight bold :height 120))))
- '(sr-passive-path-face ((t (:foreground "#008888" :weight bold :height 120)))))
+;(custom-set-faces
+; '(minimap-active-region-background ((t (:background "#494949"))) t)
+; '(preview-reference-face ((t (:foreground "#00CCCC" :background "#CCCCCC"))) t)
+; '(sr-active-path-face ((t (:foreground "#00CCCC" :weight bold :height 120))))
+; '(sr-passive-path-face ((t (:foreground "#008888" :weight bold :height 120)))))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -666,9 +663,9 @@ static char * arrow_right[] = {
 	    (smart-newline-mode t)))
 
 ;; web
-(add-hook 'web-mode-hook
-	  (lambda ()
-	    (smart-newline-mode t)))
+;(add-hook 'web-mode-hook
+;	  (lambda ()
+;	    (smart-newline-mode t)))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -683,43 +680,43 @@ static char * arrow_right[] = {
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Divide a window
-(defun split-window-vertically-n (num_wins)
-  (interactive "p")
-  (if (= num_wins 2)
-      (split-window-vertically)
-    (progn
-      (split-window-vertically
-       (- (window-height) (/ (window-height) num_wins)))
-      (split-window-vertically-n (- num_wins 1)))))
-(defun split-window-horizontally-n (num_wins)
-  (interactive "p")
-  (if (= num_wins 2)
-      (split-window-horizontally)
-    (progn
-      (split-window-horizontally
-       (- (window-width) (/ (window-width) num_wins)))
-      (split-window-horizontally-n (- num_wins 1)))))
+;(defun split-window-vertically-n (num_wins)
+;  (interactive "p")
+;  (if (= num_wins 2)
+;      (split-window-vertically)
+;    (progn
+;      (split-window-vertically
+;       (- (window-height) (/ (window-height) num_wins)))
+;      (split-window-vertically-n (- num_wins 1)))))
+;(defun split-window-horizontally-n (num_wins)
+;  (interactive "p")
+;  (if (= num_wins 2)
+;      (split-window-horizontally)
+;    (progn
+;      (split-window-horizontally
+;       (- (window-width) (/ (window-width) num_wins)))
+					;      (split-window-horizontally-n (- num_wins 1)))))
 
 ;; kbd C-t
-(defun other-window-or-split ()
-  (interactive)
-  (when (one-window-p)
-    (if (>= (window-body-width) 270)
-        (split-window-horizontally-n 3)
-      (split-window-horizontally)))
-  (other-window 1))
-(global-set-key (kbd "C-t") 'other-window-or-split)
+;(defun other-window-or-split ()
+;  (interactive)
+;  (when (one-window-p)
+;    (if (>= (window-body-width) 270)
+;        (split-window-horizontally-n 3)
+;      (split-window-horizontally)))
+;  (other-window 1))
+;(global-set-key (kbd "C-t") 'other-window-or-split)
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Align code
-(require 'align)
-(add-to-list 'align-rules-list
-	     '(ruby-xmpfilter-mark
-	       (regexp . "\\(\\s-*\\)# =>")
-	       (modes  . '(ruby-mode))))
+;(require 'align)
+;(add-to-list 'align-rules-list
+;	     '(ruby-xmpfilter-mark
+;	       (regexp . "\\(\\s-*\\)# =>")
+;	       (modes  . '(ruby-mode))))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -745,3 +742,16 @@ static char * arrow_right[] = {
 (add-to-list 'auto-mode-alist '("\\.txt\\'" . markdown-mode))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages (quote (minimap)))
+ '(safe-local-variable-values (quote ((flycheck-gcc-language-standard . c++11)))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

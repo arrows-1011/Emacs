@@ -1154,9 +1154,8 @@ If PATHS is omitted, `load-path' is used.
 
 ;;;***
 
-;;;### (autoloads (global-auto-complete-mode auto-complete-mode auto-complete)
-;;;;;;  "auto-complete/auto-complete" "auto-complete/auto-complete.el"
-;;;;;;  (22159 60114 0 0))
+;;;### (autoloads nil "auto-complete/auto-complete" "auto-complete/auto-complete.el"
+;;;;;;  (22549 62512 0 0))
 ;;; Generated autoloads from auto-complete/auto-complete.el
 
 (autoload 'auto-complete "auto-complete/auto-complete" "\
@@ -1170,8 +1169,9 @@ AutoComplete mode
 \(fn &optional ARG)" t nil)
 
 (defvar global-auto-complete-mode nil "\
-Non-nil if Global-Auto-Complete mode is enabled.
-See the command `global-auto-complete-mode' for a description of this minor mode.
+Non-nil if Global Auto-Complete mode is enabled.
+See the `global-auto-complete-mode' command
+for a description of this minor mode.
 Setting this variable directly does not take effect;
 either customize it (see the info node `Easy Customization')
 or call the function `global-auto-complete-mode'.")
@@ -1180,7 +1180,7 @@ or call the function `global-auto-complete-mode'.")
 
 (autoload 'global-auto-complete-mode "auto-complete/auto-complete" "\
 Toggle Auto-Complete mode in all buffers.
-With prefix ARG, enable Global-Auto-Complete mode if ARG is positive;
+With prefix ARG, enable Global Auto-Complete mode if ARG is positive;
 otherwise, disable it.  If called from Lisp, enable the mode if
 ARG is omitted or nil.
 
@@ -1192,8 +1192,8 @@ See `auto-complete-mode' for more information on Auto-Complete mode.
 
 ;;;***
 
-;;;### (autoloads (ac-config-default) "auto-complete/auto-complete-config"
-;;;;;;  "auto-complete/auto-complete-config.el" (21846 5072 0 0))
+;;;### (autoloads nil "auto-complete/auto-complete-config" "auto-complete/auto-complete-config.el"
+;;;;;;  (22549 62512 0 0))
 ;;; Generated autoloads from auto-complete/auto-complete-config.el
 
 (autoload 'ac-config-default "auto-complete/auto-complete-config" "\
@@ -1725,11 +1725,8 @@ Run a `perldoc' on the word around point.
 
 ;;;***
 
-;;;### (autoloads (el-get el-get-self-checksum el-get-checksum el-get-make-recipes
-;;;;;;  el-get-cd el-get-reinstall el-get-remove el-get-self-update
-;;;;;;  el-get-update-packages-of-type el-get-update-all el-get-update
-;;;;;;  el-get-install el-get-version) "el-get/el-get" "el-get/el-get.el"
-;;;;;;  (21845 49129 0 0))
+;;;### (autoloads nil "el-get/el-get" "el-get/el-get.el" (22549 61341
+;;;;;;  0 0))
 ;;; Generated autoloads from el-get/el-get.el
 
 (autoload 'el-get-version "el-get/el-get" "\
@@ -1828,15 +1825,14 @@ already installed packages is considered.
 
 ;;;***
 
-;;;### (autoloads (el-get-bundle! el-get-bundle el-get-bundle-el-get)
-;;;;;;  "el-get/el-get-bundle" "el-get/el-get-bundle.el" (21845 49129
-;;;;;;  0 0))
+;;;### (autoloads nil "el-get/el-get-bundle" "el-get/el-get-bundle.el"
+;;;;;;  (22549 61341 0 0))
 ;;; Generated autoloads from el-get/el-get-bundle.el
 
 (autoload 'el-get-bundle-el-get "el-get/el-get-bundle" "\
 
 
-\(fn SRC)" nil nil)
+\(fn SRC SYNC)" nil nil)
 
 (autoload 'el-get-bundle "el-get/el-get-bundle" "\
 Install PACKAGE and run initialization FORM.
@@ -1856,9 +1852,14 @@ same.  If you wish to `require' more than one feature, then use
 `:features' property in FORM.
 
 The initialization FORM may start with a property list that
-describes a local recipe.  The FORM after the property list is
-treated as initialization code, which is actually an `:after'
-property of the local recipe.
+describes a local recipe.  The property list may include the keyword
+`:bundle-sync' with a value of either `t' or `nil' to request that
+`el-get-bundle' invoke `el-get' synchronously (respectively asynchronously).
+The keyword `:bundle-async' is the inverse of `:bundle-sync'.
+\(Note that the request to run el-get synchronously may not be respected in all
+circumstances: see the definition of `el-get-bundle-el-get' for details.)
+The FORM after the property list is treated as initialization code,
+which is actually an `:after' property of the local recipe.
 
 A copy of the initialization code is stored in a directory
 specified by `el-get-bundle-init-directory' and its byte-compiled
@@ -1866,7 +1867,7 @@ version is used if `el-get-bundle-byte-compile' is non-nil.
 
 \(fn PACKAGE &rest FORM)" nil t)
 
-(put 'el-get-bundle 'lisp-indent-function 'defun)
+(function-put 'el-get-bundle 'lisp-indent-function 'defun)
 
 (autoload 'el-get-bundle! "el-get/el-get-bundle" "\
 Install PACKAGE and run initialization form.
@@ -1875,18 +1876,274 @@ required.
 
 \(fn PACKAGE &rest ARGS)" nil t)
 
-(put 'el-get-bundle! 'lisp-indent-function 'defun)
+(function-put 'el-get-bundle! 'lisp-indent-function 'defun)
 
 ;;;***
 
-;;;### (autoloads (el-get-list-packages) "el-get/el-get-list-packages"
-;;;;;;  "el-get/el-get-list-packages.el" (21845 49129 0 0))
+;;;### (autoloads nil "el-get/el-get-check" "el-get/el-get-check.el"
+;;;;;;  (22549 61341 0 0))
+;;; Generated autoloads from el-get/el-get-check.el
+
+(autoload 'el-get-check-recipe "el-get/el-get-check" "\
+Check the format of the recipe.
+Please run this command before sending a pull request.
+Usage: M-x el-get-check-recipe RET
+
+You can run this function from checker script like this:
+    test/check-recipe.el PATH/TO/RECIPE.rcp
+
+When used as a lisp function, FILE-OR-BUFFER must be a buffer
+object or a file path.
+
+\(fn FILE-OR-BUFFER)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "el-get/el-get-list-packages" "el-get/el-get-list-packages.el"
+;;;;;;  (22549 61341 0 0))
 ;;; Generated autoloads from el-get/el-get-list-packages.el
 
 (autoload 'el-get-list-packages "el-get/el-get-list-packages" "\
 Display a list of packages.
 
 \(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "flycheck-irony/flycheck-irony" "flycheck-irony/flycheck-irony.el"
+;;;;;;  (22549 63380 0 0))
+;;; Generated autoloads from flycheck-irony/flycheck-irony.el
+
+(autoload 'flycheck-irony-setup "flycheck-irony/flycheck-irony" "\
+Setup Flycheck Irony.
+
+Add `irony' to `flycheck-checkers'.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil "flycheck/flycheck" "flycheck/flycheck.el"
+;;;;;;  (22549 63092 0 0))
+;;; Generated autoloads from flycheck/flycheck.el
+
+(autoload 'flycheck-manual "flycheck/flycheck" "\
+Open the Flycheck manual.
+
+\(fn)" t nil)
+
+(autoload 'flycheck-mode "flycheck/flycheck" "\
+Minor mode for on-the-fly syntax checking.
+
+When called interactively, toggle `flycheck-mode'.  With prefix
+ARG, enable `flycheck-mode' if ARG is positive, otherwise disable
+it.
+
+When called from Lisp, enable `flycheck-mode' if ARG is omitted,
+nil or positive.  If ARG is `toggle', toggle `flycheck-mode'.
+Otherwise behave as if called interactively.
+
+In `flycheck-mode' the buffer is automatically syntax-checked
+using the first suitable syntax checker from `flycheck-checkers'.
+Use `flycheck-select-checker' to select a checker for the current
+buffer manually.
+
+\\{flycheck-mode-map}
+
+\(fn &optional ARG)" t nil)
+
+(defvar global-flycheck-mode nil "\
+Non-nil if Global Flycheck mode is enabled.
+See the `global-flycheck-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `global-flycheck-mode'.")
+
+(custom-autoload 'global-flycheck-mode "flycheck/flycheck" nil)
+
+(autoload 'global-flycheck-mode "flycheck/flycheck" "\
+Toggle Flycheck mode in all buffers.
+With prefix ARG, enable Global Flycheck mode if ARG is positive;
+otherwise, disable it.  If called from Lisp, enable the mode if
+ARG is omitted or nil.
+
+Flycheck mode is enabled in all buffers where
+`flycheck-mode-on-safe' would do it.
+See `flycheck-mode' for more information on Flycheck mode.
+
+\(fn &optional ARG)" t nil)
+
+(autoload 'flycheck-define-error-level "flycheck/flycheck" "\
+Define a new error LEVEL with PROPERTIES.
+
+The following PROPERTIES constitute an error level:
+
+`:severity SEVERITY'
+     A number denoting the severity of this level.  The higher
+     the number, the more severe is this level compared to other
+     levels.  Defaults to 0.
+
+     The severity is used by `flycheck-error-level-<' to
+     determine the ordering of errors according to their levels.
+
+`:compilation-level LEVEL'
+
+     A number indicating the broad class of messages that errors
+     at this level belong to: one of 0 (info), 1 (warning), or
+     2 or nil (error).  Defaults to nil.
+
+     This is used by `flycheck-checker-pattern-to-error-regexp'
+     to map error levels into `compilation-mode''s hierarchy and
+     to get proper highlighting of errors in `compilation-mode'.
+
+`:overlay-category CATEGORY'
+     A symbol denoting the overlay category to use for error
+     highlight overlays for this level.  See Info
+     node `(elisp)Overlay Properties' for more information about
+     overlay categories.
+
+     A category for an error level overlay should at least define
+     the `face' property, for error highlighting.  Another useful
+     property for error level categories is `priority', to
+     influence the stacking of multiple error level overlays.
+
+`:fringe-bitmap BITMAP'
+     A fringe bitmap symbol denoting the bitmap to use for fringe
+     indicators for this level.  See Info node `(elisp)Fringe
+     Bitmaps' for more information about fringe bitmaps,
+     including a list of built-in fringe bitmaps.
+
+`:fringe-face FACE'
+     A face symbol denoting the face to use for fringe indicators
+     for this level.
+
+`:error-list-face FACE'
+     A face symbol denoting the face to use for messages of this
+     level in the error list.  See `flycheck-list-errors'.
+
+\(fn LEVEL &rest PROPERTIES)" nil nil)
+
+(function-put 'flycheck-define-error-level 'lisp-indent-function '1)
+
+(autoload 'flycheck-define-command-checker "flycheck/flycheck" "\
+Define SYMBOL as syntax checker to run a command.
+
+Define SYMBOL as generic syntax checker via
+`flycheck-define-generic-checker', which uses an external command
+to check the buffer.  SYMBOL and DOCSTRING are the same as for
+`flycheck-define-generic-checker'.
+
+In addition to the properties understood by
+`flycheck-define-generic-checker', the following PROPERTIES
+constitute a command syntax checker.  Unless otherwise noted, all
+properties are mandatory.  Note that the default `:error-filter'
+of command checkers is `flycheck-sanitize-errors'.
+
+`:command COMMAND'
+     The command to run for syntax checking.
+
+     COMMAND is a list of the form `(EXECUTABLE [ARG ...])'.
+
+     EXECUTABLE is a string with the executable of this syntax
+     checker.  It can be overridden with the variable
+     `flycheck-SYMBOL-executable'.  Note that this variable is
+     NOT implicitly defined by this function.  Use
+     `flycheck-def-executable-var' to define this variable.
+
+     Each ARG is an argument to the executable, either as string,
+     or as special symbol or form for
+     `flycheck-substitute-argument', which see.
+
+`:error-patterns PATTERNS'
+     A list of patterns to parse the output of the `:command'.
+
+     Each ITEM in PATTERNS is a list `(LEVEL SEXP ...)', where
+     LEVEL is a Flycheck error level (see
+     `flycheck-define-error-level'), followed by one or more RX
+     `SEXP's which parse an error of that level and extract line,
+     column, file name and the message.
+
+     See `rx' for general information about RX, and
+     `flycheck-rx-to-string' for some special RX forms provided
+     by Flycheck.
+
+     All patterns are applied in the order of declaration to the
+     whole output of the syntax checker.  Output already matched
+     by a pattern will not be matched by subsequent patterns.  In
+     other words, the first pattern wins.
+
+     This property is optional.  If omitted, however, an
+     `:error-parser' is mandatory.
+
+`:error-parser FUNCTION'
+     A function to parse errors with.
+
+     The function shall accept three arguments OUTPUT CHECKER
+     BUFFER.  OUTPUT is the syntax checker output as string,
+     CHECKER the syntax checker that was used, and BUFFER a
+     buffer object representing the checked buffer.  The function
+     must return a list of `flycheck-error' objects parsed from
+     OUTPUT.
+
+     This property is optional.  If omitted, it defaults to
+     `flycheck-parse-with-patterns'.  In this case,
+     `:error-patterns' is mandatory.
+
+`:standard-input t'
+     Whether to send the buffer contents on standard input.
+
+     If this property is given and has a non-nil value, send the
+     contents of the buffer on standard input.
+
+     Defaults to nil.
+
+Note that you may not give `:start', `:interrupt', and
+`:print-doc' for a command checker.  You can give a custom
+`:verify' function, though, whose results will be appended to the
+default `:verify' function of command checkers.
+
+\(fn SYMBOL DOCSTRING &rest PROPERTIES)" nil nil)
+
+(function-put 'flycheck-define-command-checker 'lisp-indent-function '1)
+
+(function-put 'flycheck-define-command-checker 'doc-string-elt '2)
+
+(autoload 'flycheck-def-config-file-var "flycheck/flycheck" "\
+Define SYMBOL as config file variable for CHECKER, with default FILE-NAME.
+
+SYMBOL is declared as customizable variable using `defcustom', to
+provide a configuration file for the given syntax CHECKER.
+CUSTOM-ARGS are forwarded to `defcustom'.
+
+FILE-NAME is the initial value of the new variable.  If omitted,
+the default value is nil.
+
+Use this together with the `config-file' form in the `:command'
+argument to `flycheck-define-checker'.
+
+\(fn SYMBOL CHECKER &optional FILE-NAME &rest CUSTOM-ARGS)" nil t)
+
+(function-put 'flycheck-def-config-file-var 'lisp-indent-function '3)
+
+(autoload 'flycheck-def-option-var "flycheck/flycheck" "\
+Define SYMBOL as option variable with INIT-VALUE for CHECKER.
+
+SYMBOL is declared as customizable variable using `defcustom', to
+provide an option for the given syntax CHECKERS (a checker or a
+list of checkers).  INIT-VALUE is the initial value of the
+variable, and DOCSTRING is its docstring.  CUSTOM-ARGS are
+forwarded to `defcustom'.
+
+Use this together with the `option', `option-list' and
+`option-flag' forms in the `:command' argument to
+`flycheck-define-checker'.
+
+\(fn SYMBOL INIT-VALUE CHECKERS DOCSTRING &rest CUSTOM-ARGS)" nil t)
+
+(function-put 'flycheck-def-option-var 'lisp-indent-function '3)
+
+(function-put 'flycheck-def-option-var 'doc-string-elt '4)
 
 ;;;***
 
@@ -2434,13 +2691,14 @@ Major mode for editing GitHub Flavored Markdown files.
 
 ;;;***
 
-;;;### (autoloads (minimap-mode) "minimap/minimap" "minimap/minimap.el"
-;;;;;;  (21931 16677 0 0))
+;;;### (autoloads nil "minimap/minimap" "minimap/minimap.el" (22549
+;;;;;;  62865 0 0))
 ;;; Generated autoloads from minimap/minimap.el
 
 (defvar minimap-mode nil "\
 Non-nil if Minimap mode is enabled.
-See the command `minimap-mode' for a description of this minor mode.
+See the `minimap-mode' command
+for a description of this minor mode.
 Setting this variable directly does not take effect;
 either customize it (see the info node `Easy Customization')
 or call the function `minimap-mode'.")
@@ -3200,33 +3458,6 @@ Returns non-nil if the new state is enabled.
 
 ;;;***
 
-;;;### (autoloads nil "tern/emacs/tern" "tern/emacs/tern.el" (22183
-;;;;;;  29559 0 0))
-;;; Generated autoloads from tern/emacs/tern.el
-
-(autoload 'tern-use-server "tern/emacs/tern" "\
-
-
-\(fn PORT SERVER)" t nil)
-
-(autoload 'tern-mode "tern/emacs/tern" "\
-Minor mode binding to the Tern JavaScript analyzer
-
-\(fn &optional ARG)" t nil)
-
-;;;***
-
-;;;### (autoloads nil "tern/emacs/tern-auto-complete" "tern/emacs/tern-auto-complete.el"
-;;;;;;  (22183 29559 0 0))
-;;; Generated autoloads from tern/emacs/tern-auto-complete.el
-
-(autoload 'tern-ac-setup "tern/emacs/tern-auto-complete" "\
-Setup auto-complete for tern-mode.
-
-\(fn)" t nil)
-
-;;;***
-
 ;;;### (autoloads nil "vline/vline" "vline/vline.el" (22185 58128
 ;;;;;;  0 0))
 ;;; Generated autoloads from vline/vline.el
@@ -3340,14 +3571,15 @@ See `yas-minor-mode' for more information on Yas minor mode.
 ;;;;;;  "el-get/el-get-byte-compile.el" "el-get/el-get-core.el" "el-get/el-get-custom.el"
 ;;;;;;  "el-get/el-get-dependencies.el" "el-get/el-get-install.el"
 ;;;;;;  "el-get/el-get-methods.el" "el-get/el-get-notify.el" "el-get/el-get-recipes.el"
-;;;;;;  "el-get/el-get-status.el" "epl/epl.el" "flymake-easy/flymake-easy.el"
+;;;;;;  "el-get/el-get-status.el" "epl/epl.el" "flycheck/flycheck-buttercup.el"
+;;;;;;  "flycheck/flycheck-ert.el" "flymake-easy/flymake-easy.el"
 ;;;;;;  "fuzzy/fuzzy.el" "irony-mode/irony-diagnostics.el" "irony-mode/irony-snippet.el"
 ;;;;;;  "minimap/minimap-autoloads.el" "minimap/minimap-pkg.el" "perl-completion/perl-completion.el"
 ;;;;;;  "php-completion/php-completion.el" "php-mode/php-mode-test.el"
 ;;;;;;  "popup/popup.el" "powerline/powerline-separators.el" "tabbar/aquamacs-compat.el"
 ;;;;;;  "tabbar/aquamacs-tabbar.el" "tabbar/aquamacs-tools.el" "tabbar/one-buffer-one-frame.el"
 ;;;;;;  "tabbar/tabbar-window.el" "yasnippet/yasnippet-debug.el"
-;;;;;;  "yasnippet/yasnippet-tests.el") (22205 35045 627322 0))
+;;;;;;  "yasnippet/yasnippet-tests.el") (22549 63092 0 0))
 
 ;;;***
 

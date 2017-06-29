@@ -90,7 +90,7 @@ recreate the minimap to avoid problems with recentering."
   :group 'minimap)
 
 (defface minimap-active-region-background
-  '((((background dark)) (:background "#4517305D0000"))
+  '((((background dark)) (:background "#700000"))
     (t (:background "#C847D8FEFFFF")))
   "Face for the active region in the minimap.
 By default, this is only a different background color."
@@ -100,7 +100,7 @@ By default, this is only a different background color."
   '((((background dark))
      (:box (:line-width 1 :color "white")
 	   :inherit (font-lock-function-name-face minimap-font-face)
-	   :height 2.75 :background "gray10"))
+	   :height 2.75 :background "#202414"))
     (t (:box (:line-width 1 :color "black")
 	     :inherit (font-lock-function-name-face minimap-font-face)
 	     :height 2.75 :background "gray90")))

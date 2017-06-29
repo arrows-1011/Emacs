@@ -72,6 +72,9 @@
 		  (require 'el-get))))
  (epl status "installed" recipe
       (:name epl :description "EPL provides a convenient high-level API for various package.el versions, and aims to overcome its most striking idiocies." :type github :pkgname "cask/epl"))
+ (flycheck status "installed" recipe
+	   (:name flycheck :type github :pkgname "flycheck/flycheck" :minimum-emacs-version "24.3" :description "On-the-fly syntax checking extension" :depends
+		  (dash pkg-info let-alist seq)))
  (flymake-cursor status "installed" recipe
 		 (:name flymake-cursor :type github :pkgname "illusori/emacs-flymake-cursor" :description "displays flymake error msg in minibuffer after delay (illusori/github)" :website "http://github.com/illusori/emacs-flymake-cursor"))
  (flymake-easy status "installed" recipe
@@ -143,29 +146,23 @@
 	   (:name pkg-info :description "Provide information about Emacs packages." :type github :pkgname "lunaryorn/pkg-info.el" :depends
 		  (dash epl)))
  (popup status "installed" recipe
-	(:name popup :website "https://github.com/auto-complete/popup-el" :description "Visual Popup Interface Library for Emacs" :type github :submodule nil :pkgname "auto-complete/popup-el"))
+	(:name popup :website "https://github.com/auto-complete/popup-el" :description "Visual Popup Interface Library for Emacs" :type github :submodule nil :depends cl-lib :pkgname "auto-complete/popup-el"))
  (powerline status "installed" recipe
 	    (:name powerline :website "https://github.com/milkypostman/powerline" :depends
 		   (cl-lib)
 		   :description "Powerline for Emacs" :type github :pkgname "milkypostman/powerline" :load-path "." :features powerline))
  (python status "installed" recipe
 	 (:name python :description "Python's flying circus support for Emacs (trunk version, hopefully Emacs 24.x compatible)" :type http :url "http://git.savannah.gnu.org/cgit/emacs.git/plain/lisp/progmodes/python.el?h=master"))
+ (seq status "installed" recipe
+      (:name seq :description "Sequence manipulation library for Emacs" :builtin "25" :type github :pkgname "NicolasPetton/seq.el"))
  (smart-newline status "installed" recipe
 		(:name smart-newline :description "The smart-newline.el provide a stress-less newline command for programmer." :type github :pkgname "ainame/smart-newline.el"))
  (tabbar status "installed" recipe
 	 (:name tabbar :description "Display a tab bar in the header line." :type github :pkgname "dholm/tabbar" :lazy t))
  (tabbar-ruler status "installed" recipe
 	       (:name tabbar-ruler :website "https://github.com/mlf176f2/tabbar-ruler.el" :description "Tabbar ruler is an emacs package that allows both the tabbar and the ruler to be used together. In addition it allows auto-hiding of the menu-bar and tool-bar." :type github :depends tabbar :pkgname "mlf176f2/tabbar-ruler.el"))
- (tern status "installed" recipe
-       (:name tern :description "A JavaScript code analyzer for deep, cross-editor language support." :type github :pkgname "marijnh/tern" :build
-	      '(("npm" "--production" "install"))
-	      :prepare
-	      (add-to-list 'auto-mode-alist
-			   '("\\.tern-\\(project\\|\\config\\)\\'" . json-mode))
-	      :load-path
-	      ("emacs")))
  (vline status "installed" recipe
-	(:name vline :description "show vertical line (column highlighting) mode." :type emacswiki :features vline))
+	(:name vline :description "show vertical line (column highlighting) mode." :type emacswiki))
  (web-mode status "installed" recipe
 	   (:name web-mode :description "emacs major mode for editing PHP/JSP/ASP HTML templates (with embedded CSS and JS blocks)" :type github :pkgname "fxbois/web-mode"))
  (yasnippet status "installed" recipe
